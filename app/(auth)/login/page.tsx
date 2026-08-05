@@ -1,6 +1,9 @@
 "use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { ParticleBackground } from "@/components/particle-background";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -45,34 +48,35 @@ type AdminLoginFormValues = {
   password: string;
 };
 
-const featureTags = [
-  "Quản lý video & tài liệu học tập",
-  "Theo dõi lịch học & tiến độ lớp",
-  "Phân quyền học sinh, giáo viên & quản trị",
+const highlights = [
+  "Video bài giảng theo buổi",
+  "Tài liệu gắn đúng session",
+  "Quiz trắc nghiệm & tự luận",
 ];
 
 const roleTabs = [
   {
     value: "STUDENT" as const,
     label: "Học sinh",
-    description: "Học tập & làm bài",
     icon: GraduationCap,
   },
   {
     value: "TEACHER" as const,
     label: "Giáo viên",
-    description: "Quản lý lớp học",
     icon: Users,
   },
 ];
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 const loginInputClass =
-  "h-12 rounded-2xl border-white/10 bg-[#111111]/80 text-[15px] leading-normal text-zinc-100 placeholder:text-zinc-500 focus-visible:border-amber-400/50 focus-visible:ring-1 focus-visible:ring-amber-400/30 focus-visible:outline-none";
+  "h-12 rounded-xl border-slate-200 bg-white text-[15px] leading-normal text-slate-900 placeholder:text-slate-400 shadow-none focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none";
 
 const loginInputIconClass =
-  "pointer-events-none absolute top-1/2 left-4 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500 transition-colors duration-200 group-focus-within:text-amber-400/90";
+  "pointer-events-none absolute top-1/2 left-3.5 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 transition-colors duration-200 group-focus-within:text-teal-600";
 
 const LoginPage = () => {
+  const reduceMotion = useReducedMotion();
   const form = useForm<LoginFormValues>({
     defaultValues: {
       role: "STUDENT",
@@ -132,422 +136,644 @@ const LoginPage = () => {
     }
   };
 
+  const leftPanel = reduceMotion
+    ? { initial: false as const, animate: { opacity: 1, x: 0 } }
+    : {
+        initial: { opacity: 0, x: -80 },
+        animate: { opacity: 1, x: 0 },
+        transition: { duration: 0.75, ease },
+      };
+
+  const rightPanel = reduceMotion
+    ? { initial: false as const, animate: { opacity: 1, x: 0 } }
+    : {
+        initial: { opacity: 0, x: 80 },
+        animate: { opacity: 1, x: 0 },
+        transition: { duration: 0.75, delay: 0.12, ease },
+      };
+
+  const orbMotion = (duration: number, x: number, y: number) =>
+    reduceMotion
+      ? {}
+      : {
+          animate: {
+            x: [0, x, 0],
+            y: [0, y, 0],
+            scale: [1, 1.08, 1],
+          },
+          transition: {
+            duration,
+            repeat: Infinity,
+            ease: "easeInOut" as const,
+          },
+        };
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
-      <ParticleBackground variant="gold" dust />
+    <div className="min-h-screen overflow-hidden bg-white text-slate-900 lg:grid lg:grid-cols-2">
+      {/* LEFT — teal brand panel */}
+      <motion.section
+        className="relative hidden overflow-hidden bg-teal-700 lg:flex lg:flex-col"
+        {...leftPanel}
+      >
+        <motion.div
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ backgroundImage: "url(/images/landing-hero.jpg)" }}
+          initial={reduceMotion ? false : { scale: 1.12 }}
+          animate={reduceMotion ? undefined : { scale: 1 }}
+          transition={{ duration: 1.4, ease }}
+        />
+        <div className="absolute inset-0 bg-linear-to-br from-teal-800/95 via-teal-600/90 to-cyan-600/85" />
 
-      <div className="relative mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-10 lg:px-8">
-        <div className="grid w-full max-w-[940px] items-center gap-6 lg:grid-cols-[minmax(0,520px)_minmax(0,380px)] lg:gap-8">
-          {/* LEFT — branding */}
-          <div className="hidden flex-col justify-center gap-10 lg:flex">
-            <div className="space-y-8 motion-safe:animate-[fade-up_700ms_ease-out_both]">
-              <div className="space-y-2">
-                <h1 className="text-[3.1rem] font-bold leading-[1.06] tracking-tight text-white">
-                  Hệ thống học tập
-                  <br />
-                  &amp; giảng dạy
-                </h1>
-                <p className="text-[3.1rem] font-bold leading-[1.06] text-amber-400">
-                  Smart Dashboard
-                </p>
-                <p className="pt-1.5 text-2xl font-medium text-sky-300">
-                  Video, tài liệu &amp; quản lý lớp
-                </p>
-              </div>
+        <motion.div
+          className="absolute -left-16 top-24 h-56 w-56 rounded-full bg-white/10 blur-3xl"
+          {...orbMotion(10, 28, -22)}
+        />
+        <motion.div
+          className="absolute bottom-16 right-8 h-40 w-40 rounded-full bg-orange-400/25 blur-3xl"
+          {...orbMotion(12, -24, 18)}
+        />
+        <motion.div
+          className="absolute right-20 top-1/3 h-28 w-28 rounded-full bg-cyan-300/20 blur-2xl"
+          {...orbMotion(8, 16, 28)}
+        />
 
-              <div className="flex max-w-md flex-col gap-3">
-                {featureTags.map((tag, index) => (
-                  <span
-                    key={tag}
-                    className={`float-card inline-flex w-fit max-w-full items-center gap-2.5 rounded-full border border-white/10 bg-[#111111]/90 px-5 py-2.5 text-base text-zinc-300 ${
-                      index % 2 === 0 ? "self-start" : "self-end"
-                    }`}
-                    style={{ animationDelay: `${index * 1.2}s` }}
-                  >
-                    <span className="size-2 shrink-0 rounded-full bg-amber-400" />
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT — login card */}
-          <div className="w-full motion-safe:animate-[fade-up_700ms_ease-out_both] motion-safe:[animation-delay:120ms] lg:min-w-0">
-            <div className="float-bob-slow relative w-full">
-              <div className="space-y-4 px-6 py-6">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <h2 className="text-[17px] font-semibold text-zinc-100">
-                      Đăng nhập hệ thống
-                    </h2>
-                    <p className="text-xs text-zinc-500">
-                      Truy cập nền tảng học tập
-                    </p>
-                  </div>
+        <div className="relative z-10 flex flex-1 flex-col px-10 py-10 xl:px-14">
+          <motion.div
+            className="flex flex-1 flex-col"
+            initial={reduceMotion ? false : "hidden"}
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.1, delayChildren: 0.28 },
+              },
+            }}
+          >
+            <motion.div
+              variants={
+                reduceMotion
+                  ? undefined
+                  : {
+                      hidden: { opacity: 0, x: -40 },
+                      visible: {
+                        opacity: 1,
+                        x: 0,
+                        transition: { duration: 0.55, ease },
+                      },
+                    }
+              }
+            >
+              <Link href="/" className="flex items-center gap-2.5">
+                <div className="relative flex h-9 w-9 overflow-hidden rounded-full bg-white/15 ring-1 ring-white/30">
+                  <Image
+                    src="/icons/eduIcon02.png"
+                    alt="Course Learning"
+                    width={36}
+                    height={36}
+                    className="h-full w-full object-cover"
+                    priority
+                  />
                 </div>
+                <span className="text-[15px] font-bold tracking-tight text-white">
+                  Course Learning
+                </span>
+              </Link>
+            </motion.div>
 
-                <Form {...form}>
-                  <form
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      form.handleSubmit(onSubmit)(event);
+            <div className="flex flex-1 flex-col justify-center py-16">
+              <motion.span
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: { opacity: 0, x: -40 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: { duration: 0.55, ease },
+                        },
+                      }
+                }
+                className="inline-flex w-fit rounded-full bg-orange-500 px-3.5 py-1 text-[11px] font-bold tracking-wide text-white uppercase"
+              >
+                One stop solution
+              </motion.span>
+
+              <motion.h1
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: { opacity: 0, x: -40 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: { duration: 0.55, ease },
+                        },
+                      }
+                }
+                className="mt-5 text-[clamp(2.2rem,3.5vw,3.1rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-white"
+              >
+                Học tập thông minh
+                <br />
+                <span className="text-orange-300">Course Learning</span>
+              </motion.h1>
+
+              <motion.p
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: { opacity: 0, x: -40 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: { duration: 0.55, ease },
+                        },
+                      }
+                }
+                className="mt-4 max-w-md text-base leading-relaxed text-teal-50/90"
+              >
+                Video, tài liệu và quiz theo từng buổi — đăng nhập để tiếp tục
+                học và giảng dạy.
+              </motion.p>
+
+              <motion.ul
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: { opacity: 0, x: -40 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: { duration: 0.55, ease },
+                        },
+                      }
+                }
+                className="mt-10 max-w-sm space-y-0 border-t border-white/20"
+              >
+                {highlights.map((item, index) => (
+                  <motion.li
+                    key={item}
+                    className="border-b border-white/20 py-3.5 text-sm font-medium text-white/90"
+                    initial={reduceMotion ? false : { opacity: 0, x: -28 }}
+                    animate={reduceMotion ? undefined : { opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.45,
+                      delay: 0.7 + index * 0.12,
+                      ease,
                     }}
-                    className="space-y-3.5"
-                    noValidate
                   >
-                    <FormField
-                      control={form.control}
-                      name="role"
-                      rules={{ required: "Vui lòng chọn vai trò." }}
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel className="text-[11px] font-semibold tracking-[0.12em] text-zinc-500 uppercase">
-                            Vai trò
-                          </FormLabel>
-                          <FormControl>
-                            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-[#111111]/80 p-1.5">
-                              {roleTabs.map((role) => {
-                                const Icon = role.icon;
-
-                                return (
-                                  <label
-                                    key={role.value}
-                                    className="group cursor-pointer"
-                                  >
-                                    <input
-                                      className="peer sr-only"
-                                      type="radio"
-                                      name={field.name}
-                                      value={role.value}
-                                      checked={field.value === role.value}
-                                      onChange={() => {
-                                        field.onChange(role.value);
-                                        resetValidation();
-                                      }}
-                                    />
-                                    <span
-                                      className={cn(
-                                        "flex min-h-[4.5rem] flex-col items-center justify-center gap-1.5 rounded-xl border border-transparent px-3 py-3 text-center transition-all duration-200",
-                                        "text-zinc-400",
-                                        "group-hover:border-white/10 group-hover:bg-white/[0.03] group-hover:text-white",
-                                        "peer-checked:border-amber-400/30 peer-checked:bg-amber-400 peer-checked:text-zinc-900 peer-checked:shadow-[0_6px_20px_rgba(251,191,36,0.28)]",
-                                        "group-hover:peer-checked:border-amber-300/60 group-hover:peer-checked:bg-amber-300 group-hover:peer-checked:text-zinc-900 group-hover:peer-checked:shadow-[0_8px_26px_rgba(251,191,36,0.45)]",
-                                      )}
-                                    >
-                                      <Icon className="h-5 w-5 shrink-0 transition-colors duration-200" />
-                                      <span className="text-sm font-semibold leading-none">
-                                        {role.label}
-                                      </span>
-                                      <span className="text-[10px] font-medium leading-none opacity-70">
-                                        {role.description}
-                                      </span>
-                                    </span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      rules={{
-                        required: "Vui lòng nhập email.",
-                        pattern: {
-                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                          message: "Email không đúng định dạng.",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <FormItem className="space-y-1">
-                          <FormLabel className="text-[10px] font-semibold tracking-[0.14em] text-zinc-500 uppercase">
-                            Email
-                          </FormLabel>
-                          <FormControl>
-                            <div className="group relative">
-                              <Mail
-                                className={loginInputIconClass}
-                                strokeWidth={1.5}
-                              />
-                              <Input
-                                {...field}
-                                type="email"
-                                placeholder="phuc@gmail.com"
-                                autoComplete="email"
-                                className={cn(loginInputClass, "pr-4 pl-11")}
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="password"
-                      rules={{
-                        required: "Vui lòng nhập mật khẩu.",
-                        minLength: {
-                          value: 6,
-                          message:
-                            "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.",
-                        },
-                        validate: (value) => {
-                          const hasUppercase = /[A-Z]/.test(value);
-                          const hasNumber = /\d/.test(value);
-                          const hasSpecial = /[^A-Za-z0-9]/.test(value);
-
-                          if (hasUppercase && hasNumber && hasSpecial) {
-                            return true;
-                          }
-
-                          return "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.";
-                        },
-                      }}
-                      render={({ field }) => (
-                        <FormItem className="space-y-1">
-                          <FormLabel className="text-[10px] font-semibold tracking-[0.14em] text-zinc-500 uppercase">
-                            Mật khẩu
-                          </FormLabel>
-                          <FormControl>
-                            <div className="group relative">
-                              <Lock
-                                className={loginInputIconClass}
-                                strokeWidth={1.5}
-                              />
-                              <Input
-                                {...field}
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                autoComplete="current-password"
-                                className={cn(loginInputClass, "pr-11 pl-11")}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => setShowPassword((prev) => !prev)}
-                                aria-label={
-                                  showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
-                                }
-                                className="absolute top-1/2 right-3.5 -translate-y-1/2 text-zinc-500 transition hover:text-amber-300"
-                              >
-                                {showPassword ? (
-                                  <EyeOff
-                                    className="h-[18px] w-[18px] cursor-pointer"
-                                    strokeWidth={1.5}
-                                  />
-                                ) : (
-                                  <Eye
-                                    className="h-[18px] w-[18px] cursor-pointer"
-                                    strokeWidth={1.5}
-                                  />
-                                )}
-                              </button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      disabled={isLoginPending}
-                      aria-busy={isLoginPending}
-                      className="login-btn-gold h-10 w-full cursor-pointer rounded-2xl border-0 text-sm font-bold text-zinc-900 transition-all duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
-                    >
-                      {isLoginPending ? (
-                        <span className="inline-flex items-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Đang đăng nhập...
-                        </span>
-                      ) : (
-                        "Xác thực & Đăng nhập"
-                      )}
-                    </Button>
-
-                    {form.formState.errors.root?.message ? (
-                      <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
-                        {form.formState.errors.root.message}
-                      </p>
-                    ) : null}
-                  </form>
-                </Form>
-
-                <div className="flex items-center justify-end pt-3">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <button
-                        type="button"
-                        onClick={resetAdminValidation}
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-2xl border border-white/10 bg-[#111111]/80 px-2.5 py-1.5 text-[11px] font-medium text-zinc-300 transition hover:border-amber-400/30 hover:text-amber-300"
-                      >
-                        <ShieldCheck className="h-3.5 w-3.5 text-amber-400" />
-                        Quản trị viên
-                      </button>
-                    </DialogTrigger>
-                    <DialogContent
-                      overlayClassName="bg-black/70 backdrop-blur-sm"
-                      className="gap-0 overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.04] p-0 text-zinc-100 shadow-[0_24px_60px_rgba(0,0,0,0.55)] ring-0 backdrop-blur-2xl sm:max-w-[380px] [&_[data-slot=dialog-close]]:top-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:rounded-xl [&_[data-slot=dialog-close]]:text-zinc-500 hover:[&_[data-slot=dialog-close]]:bg-white/10 hover:[&_[data-slot=dialog-close]]:text-amber-300"
-                    >
-                      <div className="h-px w-full bg-gradient-to-r from-amber-400/40 via-amber-300/30 to-sky-400/40" />
-
-                      <div className="space-y-4 p-6">
-                        <DialogHeader className="flex-row items-center gap-3 space-y-0 text-left">
-                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-300">
-                            <ShieldCheck className="h-5 w-5" />
-                          </div>
-                          <div className="space-y-1 pr-8">
-                            <DialogTitle className="text-base font-semibold text-zinc-100">
-                              Đăng nhập quản trị
-                            </DialogTitle>
-                            <DialogDescription className="text-xs text-zinc-500">
-                              Dành riêng cho quản trị hệ thống
-                            </DialogDescription>
-                          </div>
-                        </DialogHeader>
-
-                        <Form {...adminForm}>
-                          <form
-                            onSubmit={(event) => {
-                              event.preventDefault();
-                              event.stopPropagation();
-                              adminForm.handleSubmit(onAdminSubmit)(event);
-                            }}
-                            className="space-y-3.5"
-                            noValidate
-                          >
-                            <FormField
-                              control={adminForm.control}
-                              name="email"
-                              rules={{
-                                required: "Vui lòng nhập email.",
-                                pattern: {
-                                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                  message: "Email không đúng định dạng.",
-                                },
-                              }}
-                              render={({ field }) => (
-                                <FormItem className="space-y-1">
-                                  <FormLabel className="text-[10px] font-semibold tracking-[0.14em] text-zinc-500 uppercase">
-                                    Email
-                                  </FormLabel>
-                                  <FormControl>
-                                    <div className="relative">
-                                      <User className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500" />
-                                      <Input
-                                        {...field}
-                                        type="email"
-                                        placeholder="admin@domain.com"
-                                        autoComplete="email"
-                                        className="h-10 rounded-2xl border-white/10 bg-[#111111]/80 pr-3 pl-9 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:border-amber-400/50 focus-visible:ring-1 focus-visible:ring-amber-400/30 focus-visible:outline-none"
-                                      />
-                                    </div>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            <FormField
-                              control={adminForm.control}
-                              name="password"
-                              rules={{
-                                required: "Vui lòng nhập mật khẩu.",
-                                minLength: {
-                                  value: 6,
-                                  message:
-                                    "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.",
-                                },
-                                validate: (value) => {
-                                  const hasUppercase = /[A-Z]/.test(value);
-                                  const hasNumber = /\d/.test(value);
-                                  const hasSpecial = /[^A-Za-z0-9]/.test(value);
-
-                                  if (hasUppercase && hasNumber && hasSpecial) {
-                                    return true;
-                                  }
-
-                                  return "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.";
-                                },
-                              }}
-                              render={({ field }) => (
-                                <FormItem className="space-y-1">
-                                  <FormLabel className="text-[10px] font-semibold tracking-[0.14em] text-zinc-500 uppercase">
-                                    Mật khẩu
-                                  </FormLabel>
-                                  <FormControl>
-                                    <div className="relative">
-                                      <Lock className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500" />
-                                      <Input
-                                        {...field}
-                                        type={
-                                          showAdminPassword
-                                            ? "text"
-                                            : "password"
-                                        }
-                                        placeholder="••••••••"
-                                        autoComplete="current-password"
-                                        className="h-10 rounded-2xl border-white/10 bg-[#111111]/80 pr-9 pl-9 text-sm text-zinc-100 placeholder:text-zinc-600 focus-visible:border-amber-400/50 focus-visible:ring-1 focus-visible:ring-amber-400/30 focus-visible:outline-none"
-                                      />
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          setShowAdminPassword((prev) => !prev)
-                                        }
-                                        className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-500 transition hover:text-amber-300"
-                                      >
-                                        {showAdminPassword ? (
-                                          <EyeOff className="h-3.5 w-3.5 cursor-pointer" />
-                                        ) : (
-                                          <Eye className="h-3.5 w-3.5 cursor-pointer" />
-                                        )}
-                                      </button>
-                                    </div>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            <Button
-                              type="submit"
-                              disabled={isAdminPending}
-                              aria-busy={isAdminPending}
-                              className="login-btn-gold h-10 w-full cursor-pointer rounded-2xl border-0 text-sm font-bold text-zinc-900 transition-all duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
-                            >
-                              {isAdminPending ? (
-                                <span className="inline-flex items-center gap-2">
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                  Đang đăng nhập...
-                                </span>
-                              ) : (
-                                "Xác thực & Đăng nhập"
-                              )}
-                            </Button>
-
-                            {adminForm.formState.errors.root?.message ? (
-                              <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
-                                {adminForm.formState.errors.root.message}
-                              </p>
-                            ) : null}
-                          </form>
-                        </Form>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </div>
+                    {item}
+                  </motion.li>
+                ))}
+              </motion.ul>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.section>
+
+      {/* RIGHT — form */}
+      <motion.section
+        className="relative flex min-h-screen flex-col px-6 py-8 sm:px-10 lg:px-14 xl:px-20"
+        {...rightPanel}
+      >
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 lg:hidden">
+            <div className="relative flex h-8 w-8 overflow-hidden rounded-full bg-teal-50 ring-1 ring-teal-100">
+              <Image
+                src="/icons/eduIcon02.png"
+                alt="Course Learning"
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="text-sm font-bold text-slate-800">
+              Course Learning
+            </span>
+          </Link>
+          <Link
+            href="/"
+            className="ml-auto text-sm font-medium text-slate-400 transition hover:text-teal-700"
+          >
+            Về trang chủ
+          </Link>
+        </div>
+
+        <motion.div
+          className="mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center py-10"
+          initial={reduceMotion ? false : "hidden"}
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.08, delayChildren: 0.28 },
+            },
+          }}
+        >
+          <motion.div
+            className="mb-8"
+            variants={
+              reduceMotion
+                ? undefined
+                : {
+                    hidden: { opacity: 0, x: 40 },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.55, ease },
+                    },
+                  }
+            }
+          >
+            <h2 className="text-[1.85rem] font-extrabold tracking-[-0.03em] text-slate-900">
+              Đăng nhập
+            </h2>
+            <p className="mt-2 text-[15px] text-slate-500">
+              Nhập email và mật khẩu để tiếp tục học tập.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={
+              reduceMotion
+                ? undefined
+                : {
+                    hidden: { opacity: 0, x: 40 },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.55, ease },
+                    },
+                  }
+            }
+          >
+
+          <Form {...form}>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                form.handleSubmit(onSubmit)(event);
+              }}
+              className="space-y-5"
+              noValidate
+            >
+              <FormField
+                control={form.control}
+                name="role"
+                rules={{ required: "Vui lòng chọn vai trò." }}
+                render={({ field }) => (
+                  <FormItem className="space-y-2.5">
+                    <FormLabel className="text-sm font-semibold text-slate-800">
+                      Vai trò
+                    </FormLabel>
+                    <FormControl>
+                      <div className="grid grid-cols-2 gap-3">
+                        {roleTabs.map((role) => {
+                          const Icon = role.icon;
+                          const active = field.value === role.value;
+
+                          return (
+                            <label
+                              key={role.value}
+                              className="group cursor-pointer"
+                            >
+                              <input
+                                className="peer sr-only"
+                                type="radio"
+                                name={field.name}
+                                value={role.value}
+                                checked={active}
+                                onChange={() => {
+                                  field.onChange(role.value);
+                                  resetValidation();
+                                }}
+                              />
+                              <span
+                                className={cn(
+                                  "flex items-center justify-center gap-2 border-b-2 px-2 py-3 text-sm font-semibold transition-colors",
+                                  active
+                                    ? "border-orange-500 text-orange-600"
+                                    : "border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700",
+                                )}
+                              >
+                                <Icon className="h-4 w-4 shrink-0" />
+                                {role.label}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                rules={{
+                  required: "Vui lòng nhập email.",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Email không đúng định dạng.",
+                  },
+                }}
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-sm font-semibold text-slate-800">
+                      Email
+                    </FormLabel>
+                    <FormControl>
+                      <div className="group relative">
+                        <Mail
+                          className={loginInputIconClass}
+                          strokeWidth={1.75}
+                        />
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="kou.fuku@email.com"
+                          autoComplete="email"
+                          className={cn(loginInputClass, "pr-4 pl-11")}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                rules={{
+                  required: "Vui lòng nhập mật khẩu.",
+                  minLength: {
+                    value: 6,
+                    message:
+                      "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.",
+                  },
+                  validate: (value) => {
+                    const hasUppercase = /[A-Z]/.test(value);
+                    const hasNumber = /\d/.test(value);
+                    const hasSpecial = /[^A-Za-z0-9]/.test(value);
+
+                    if (hasUppercase && hasNumber && hasSpecial) {
+                      return true;
+                    }
+
+                    return "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.";
+                  },
+                }}
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-sm font-semibold text-slate-800">
+                      Mật khẩu
+                    </FormLabel>
+                    <FormControl>
+                      <div className="group relative">
+                        <Lock
+                          className={loginInputIconClass}
+                          strokeWidth={1.75}
+                        />
+                        <Input
+                          {...field}
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          autoComplete="current-password"
+                          className={cn(loginInputClass, "pr-11 pl-11")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          aria-label={
+                            showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+                          }
+                          className="absolute top-1/2 right-3.5 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
+                        >
+                          {showPassword ? (
+                            <EyeOff
+                              className="h-[18px] w-[18px] cursor-pointer"
+                              strokeWidth={1.75}
+                            />
+                          ) : (
+                            <Eye
+                              className="h-[18px] w-[18px] cursor-pointer"
+                              strokeWidth={1.75}
+                            />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                disabled={isLoginPending}
+                aria-busy={isLoginPending}
+                className="h-12 w-full cursor-pointer rounded-full border-0 bg-orange-500 text-[15px] font-bold text-white shadow-[0_10px_24px_rgba(249,115,22,0.3)] transition hover:bg-orange-600 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
+              >
+                {isLoginPending ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Đang đăng nhập...
+                  </span>
+                ) : (
+                  "Đăng nhập"
+                )}
+              </Button>
+
+              {form.formState.errors.root?.message ? (
+                <p className="border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-600">
+                  {form.formState.errors.root.message}
+                </p>
+              ) : null}
+            </form>
+          </Form>
+          </motion.div>
+
+          <motion.div
+            className="mt-10 flex justify-center border-t border-slate-100 pt-6"
+            variants={
+              reduceMotion
+                ? undefined
+                : {
+                    hidden: { opacity: 0, x: 40 },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.55, ease },
+                    },
+                  }
+            }
+          >
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  onClick={resetAdminValidation}
+                  className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-slate-400 transition hover:text-teal-700"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  Đăng nhập quản trị viên
+                </button>
+              </DialogTrigger>
+              <DialogContent className="gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-xl sm:max-w-[380px]">
+                <div className="h-1 w-full bg-orange-500" />
+
+                <div className="space-y-4 p-6">
+                  <DialogHeader className="flex-row items-center gap-3 space-y-0 text-left">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
+                      <ShieldCheck className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1 pr-8">
+                      <DialogTitle className="text-base font-bold text-slate-900">
+                        Đăng nhập quản trị
+                      </DialogTitle>
+                      <DialogDescription className="text-xs text-slate-500">
+                        Dành riêng cho quản trị hệ thống
+                      </DialogDescription>
+                    </div>
+                  </DialogHeader>
+
+                  <Form {...adminForm}>
+                    <form
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        adminForm.handleSubmit(onAdminSubmit)(event);
+                      }}
+                      className="space-y-3.5"
+                      noValidate
+                    >
+                      <FormField
+                        control={adminForm.control}
+                        name="email"
+                        rules={{
+                          required: "Vui lòng nhập email.",
+                          pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Email không đúng định dạng.",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-sm font-semibold text-slate-800">
+                              Email
+                            </FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <User className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+                                <Input
+                                  {...field}
+                                  type="email"
+                                  placeholder="admin@domain.com"
+                                  autoComplete="email"
+                                  className="h-11 rounded-xl border-slate-200 bg-white pr-3 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none"
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={adminForm.control}
+                        name="password"
+                        rules={{
+                          required: "Vui lòng nhập mật khẩu.",
+                          minLength: {
+                            value: 6,
+                            message:
+                              "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.",
+                          },
+                          validate: (value) => {
+                            const hasUppercase = /[A-Z]/.test(value);
+                            const hasNumber = /\d/.test(value);
+                            const hasSpecial = /[^A-Za-z0-9]/.test(value);
+
+                            if (hasUppercase && hasNumber && hasSpecial) {
+                              return true;
+                            }
+
+                            return "Mật khẩu phải có ít nhất 6 ký tự, bao gồm in hoa, số và ký tự đặc biệt.";
+                          },
+                        }}
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-sm font-semibold text-slate-800">
+                              Mật khẩu
+                            </FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Lock className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+                                <Input
+                                  {...field}
+                                  type={
+                                    showAdminPassword ? "text" : "password"
+                                  }
+                                  placeholder="••••••••"
+                                  autoComplete="current-password"
+                                  className="h-11 rounded-xl border-slate-200 bg-white pr-9 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setShowAdminPassword((prev) => !prev)
+                                  }
+                                  className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
+                                >
+                                  {showAdminPassword ? (
+                                    <EyeOff className="h-3.5 w-3.5 cursor-pointer" />
+                                  ) : (
+                                    <Eye className="h-3.5 w-3.5 cursor-pointer" />
+                                  )}
+                                </button>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        disabled={isAdminPending}
+                        aria-busy={isAdminPending}
+                        className="h-11 w-full cursor-pointer rounded-full border-0 bg-orange-500 text-sm font-bold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-80"
+                      >
+                        {isAdminPending ? (
+                          <span className="inline-flex items-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Đang đăng nhập...
+                          </span>
+                        ) : (
+                          "Đăng nhập"
+                        )}
+                      </Button>
+
+                      {adminForm.formState.errors.root?.message ? (
+                        <p className="border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600">
+                          {adminForm.formState.errors.root.message}
+                        </p>
+                      ) : null}
+                    </form>
+                  </Form>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </motion.div>
+        </motion.div>
+      </motion.section>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 export const landingNavLinks = [
-  { href: "#quiz", label: "Bài tập & Quiz" },
-  { href: "#features", label: "Video & Tài liệu" },
+  { href: "#features", label: "Khóa học" },
+  { href: "#quiz", label: "Quiz" },
+  { href: "#solutions", label: "Giải pháp" },
+  { href: "#about", label: "Giới thiệu" },
 ] as const;
 
 export const landingLoginHref = "/login" as const;
