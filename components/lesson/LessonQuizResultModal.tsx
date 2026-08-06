@@ -52,7 +52,7 @@ const isEssayQuiz = (questions: QuizSubmissionResult["questions"]) =>
 
 const getQuestionStatusDotClass = (
   question: QuizSubmissionResult["questions"][number],
-  _isActive: boolean,
+  isActive: boolean,
   isPending: boolean,
   hasAnswer: boolean,
 ) => {
