@@ -68,8 +68,8 @@ function EmptyState({
 }) {
   return (
     <div className="flex min-h-[240px] flex-col items-center justify-center px-4 text-center">
-      <Paperclip className="mb-3 h-6 w-6 text-[#1e3a5f]/50" />
-      <p className="text-base font-bold tracking-tight text-[#0c1e3a]">
+      <Paperclip className="mb-3 h-6 w-6 text-[#6c5ce7]/50" />
+      <p className="text-base font-bold tracking-tight text-[#5b4bd1]">
         {title}
       </p>
       <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
@@ -89,9 +89,9 @@ function MaterialRow({
   const isLink = resource.type === "LINK";
 
   return (
-    <article className="border-b border-[#0c1e3a]/10 py-5 last:border-b-0">
+    <article className="border-b border-[#5b4bd1]/10 py-5 last:border-b-0">
       <div className="flex items-start gap-4 sm:gap-5">
-        <span className="w-8 shrink-0 pt-0.5 text-sm font-bold text-[#1e3a5f]/45">
+        <span className="w-8 shrink-0 pt-0.5 text-sm font-bold text-[#6c5ce7]/45">
           {String(index + 1).padStart(2, "0")}
         </span>
 
@@ -100,12 +100,12 @@ function MaterialRow({
             <span
               className={cn(
                 "text-[11px] font-bold tracking-[0.12em] uppercase",
-                isLink ? "text-[#c2410c]" : "text-[#1e3a5f]",
+                isLink ? "text-[#c2410c]" : "text-[#6c5ce7]",
               )}
             >
               {isLink ? "Link" : "File"}
             </span>
-            <h4 className="text-base font-bold tracking-tight text-[#0c1e3a]">
+            <h4 className="text-base font-bold tracking-tight text-[#5b4bd1]">
               {resource.title}
             </h4>
           </div>
@@ -128,13 +128,13 @@ function MaterialRow({
                       href={resourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="group flex items-center gap-3 border-t border-[#0c1e3a]/6 py-2.5 first:border-t-0 first:pt-1"
+                      className="group flex items-center gap-3 border-t border-[#5b4bd1]/6 py-2.5 first:border-t-0 first:pt-1"
                     >
-                      <UrlIcon className="h-4 w-4 shrink-0 text-[#1e3a5f]" />
-                      <span className="min-w-0 flex-1 truncate text-sm text-slate-600 transition group-hover:text-[#0c1e3a]">
+                      <UrlIcon className="h-4 w-4 shrink-0 text-[#6c5ce7]" />
+                      <span className="min-w-0 flex-1 truncate text-sm text-slate-600 transition group-hover:text-[#5b4bd1]">
                         {urlVisual.label}
                       </span>
-                      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-[#1e3a5f] transition group-hover:text-[#0c1e3a]">
+                      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-[#6c5ce7] transition group-hover:text-[#5b4bd1]">
                         {isLink ? (
                           <>
                             Mở
@@ -168,8 +168,8 @@ export function LessonMaterialsList({
   if (!snapLessonId) {
     return (
       <section>
-        <header className="mb-2 border-b border-[#0c1e3a]/15 pb-4">
-          <p className="text-xs font-bold tracking-[0.16em] text-[#1e3a5f] uppercase">
+        <header className="mb-2 border-b border-[#5b4bd1]/15 pb-4">
+          <p className="text-xs font-bold tracking-[0.16em] text-[#6c5ce7] uppercase">
             Tài liệu buổi học
           </p>
         </header>
@@ -184,17 +184,17 @@ export function LessonMaterialsList({
   if (isLoading) {
     return (
       <section>
-        <header className="mb-2 border-b border-[#0c1e3a]/15 pb-4">
-          <p className="text-xs font-bold tracking-[0.16em] text-[#1e3a5f] uppercase">
+        <header className="mb-2 border-b border-[#5b4bd1]/15 pb-4">
+          <p className="text-xs font-bold tracking-[0.16em] text-[#6c5ce7] uppercase">
             Tài liệu buổi học
           </p>
           {lessonTitle ? (
-            <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#0c1e3a]">
+            <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#5b4bd1]">
               {lessonTitle}
             </h3>
           ) : null}
         </header>
-        <div className="flex min-h-[220px] items-center justify-center gap-3 text-sm font-medium text-[#1e3a5f]">
+        <div className="flex min-h-[220px] items-center justify-center gap-3 text-sm font-medium text-[#6c5ce7]">
           <Loader2 className="h-5 w-5 animate-spin" />
           Đang tải tài liệu...
         </div>
@@ -205,11 +205,11 @@ export function LessonMaterialsList({
   if (resources.length === 0) {
     return (
       <section>
-        <header className="mb-2 border-b border-[#0c1e3a]/15 pb-4">
-          <p className="text-xs font-bold tracking-[0.16em] text-[#1e3a5f] uppercase">
+        <header className="mb-2 border-b border-[#5b4bd1]/15 pb-4">
+          <p className="text-xs font-bold tracking-[0.16em] text-[#6c5ce7] uppercase">
             Tài liệu buổi học
           </p>
-          <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#0c1e3a]">
+          <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#5b4bd1]">
             {lessonTitle || "Tài liệu"}
           </h3>
         </header>
@@ -223,16 +223,16 @@ export function LessonMaterialsList({
 
   return (
     <section>
-      <header className="mb-1 flex flex-wrap items-end justify-between gap-3 border-b border-[#0c1e3a]/15 pb-4">
+      <header className="mb-1 flex flex-wrap items-end justify-between gap-3 border-b border-[#5b4bd1]/15 pb-4">
         <div>
-          <p className="text-xs font-bold tracking-[0.16em] text-[#1e3a5f] uppercase">
+          <p className="text-xs font-bold tracking-[0.16em] text-[#6c5ce7] uppercase">
             Tài liệu buổi học
           </p>
-          <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#0c1e3a]">
+          <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#5b4bd1]">
             {lessonTitle || "Tài liệu"}
           </h3>
         </div>
-        <span className="text-sm font-semibold text-[#1e3a5f]/70">
+        <span className="text-sm font-semibold text-[#6c5ce7]/70">
           {resources.length} mục
         </span>
       </header>

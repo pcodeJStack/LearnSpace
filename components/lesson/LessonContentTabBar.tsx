@@ -51,7 +51,7 @@ export function LessonContentTabBar({
   quizzesCount = 0,
 }: LessonContentTabBarProps) {
   return (
-    <div className="border-b border-slate-200/90 px-4 py-3 sm:px-6">
+    <div className="border-b border-slate-200/70 bg-white px-4 py-3 sm:px-6">
       <div
         role="tablist"
         aria-label="Nội dung buổi học"
@@ -75,16 +75,16 @@ export function LessonContentTabBar({
               aria-selected={isActive}
               onClick={() => onChange(tab.key)}
               className={cn(
-                "inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold tracking-tight transition-all sm:px-4",
+                "inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold tracking-tight transition-all sm:px-4",
                 isActive
-                  ? "border-blue-900 bg-blue-900 text-white shadow-md"
-                  : "border-blue-200/90 bg-white text-blue-950 hover:border-blue-300 hover:bg-blue-50/80",
+                  ? "border-[#6c5ce7] bg-[#6c5ce7] text-white shadow-[0_10px_22px_rgba(108,92,231,0.28)]"
+                  : "border-slate-200 bg-white text-[#6c5ce7] hover:border-[#c4b5fd] hover:bg-white hover:shadow-[0_6px_16px_rgba(108,92,231,0.12)]",
               )}
             >
               <Icon
                 className={cn(
                   "h-4 w-4 shrink-0",
-                  isActive ? "text-blue-100" : "text-blue-700",
+                  isActive ? "text-white" : "text-[#6c5ce7]",
                 )}
               />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -94,8 +94,8 @@ export function LessonContentTabBar({
                   className={cn(
                     "inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none",
                     isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-blue-100 text-blue-800",
+                      ? "bg-white/25 text-white"
+                      : "bg-[#6c5ce7]/12 text-[#6c5ce7]",
                   )}
                 >
                   {countLabel}

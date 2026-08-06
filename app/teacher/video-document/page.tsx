@@ -415,8 +415,8 @@ function LessonMaterialsPanel({
                 onDragLeave={() => setIsDragging(false)}
                 className={`relative flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-4 transition ${
                   isDragging
-                    ? "border-blue-400 bg-blue-50/40"
-                    : "border-slate-200 bg-slate-50 hover:bg-slate-100"
+                    ? "border-[#6c5ce7] bg-[rgba(108,92,231,0.06)]"
+                    : "border-slate-200 bg-slate-50/60 hover:border-[#c4b5fd] hover:bg-slate-50"
                 }`}
               >
                 <input
@@ -963,7 +963,7 @@ function VideoDocumentManagementContent() {
       min-w-60
       rounded-xl
       border-slate-200
-      bg-background
+      bg-white
       px-4
       text-sm
       font-medium
@@ -991,14 +991,14 @@ function VideoDocumentManagementContent() {
             ))}
           </SelectContent>
         </Select>
-        <div className="hidden items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-500 md:flex">
-          <MonitorPlay className="h-3.5 w-3.5 text-sky-500" />
+        <div className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-[#6c5ce7] md:flex">
+          <MonitorPlay className="h-3.5 w-3.5 text-[#6c5ce7]" />
           Quản lý buổi học
         </div>
       </header>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
-        <section className="min-h-0 overflow-y-auto border-r border-slate-200 bg-slate-50/30 px-3 py-4 sm:px-4">
+        <section className="min-h-0 overflow-y-auto border-r border-slate-200/80 bg-white px-3 py-4 sm:px-4">
           <LessonModuleSidebar
             modules={sidebarModules}
             activeSessionId={resolvedSessionId}
@@ -1028,7 +1028,7 @@ function VideoDocumentManagementContent() {
             />
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/50 p-4">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/40 p-4">
             {activeTab === "materials" ? (
               <LessonMaterialsPanel
                 snapLessonId={activeSession.session.id}
@@ -1199,8 +1199,8 @@ function VideoDocumentManagementContent() {
         bg-slate-50
         p-6
         transition-all
-        hover:border-blue-300
-        hover:bg-blue-50/40
+        hover:border-[#c4b5fd]
+        hover:bg-slate-50
       "
                   >
                     <input
@@ -1254,7 +1254,7 @@ function VideoDocumentManagementContent() {
             shadow-sm
           "
                       >
-                        <Film className="h-5 w-5 text-blue-600" />
+                        <Film className="h-5 w-5 text-[#6c5ce7]" />
 
                         <div className="flex flex-col text-left">
                           <span className="max-w-[280px] truncate text-sm font-medium text-slate-800">

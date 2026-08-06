@@ -89,7 +89,7 @@ export function LessonQuizPanel({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-sm text-slate-500">
-        <Loader2 className="h-4 w-4 animate-spin text-blue-700" />
+        <Loader2 className="h-4 w-4 animate-spin text-[#6c5ce7]" />
         Đang tải bài tập...
       </div>
     );

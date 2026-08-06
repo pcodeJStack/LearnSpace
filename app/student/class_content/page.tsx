@@ -276,7 +276,7 @@ const ClassContentManagement = () => {
       <div className="flex h-full items-center justify-center px-4 py-8 sm:px-6">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-slate-200/80 p-6 sm:p-8">
           <div className="space-y-3 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-violet-50 text-violet-600">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#6c5ce7] shadow-[0_8px_20px_rgba(108,92,231,0.18)] ring-1 ring-[#6c5ce7]/20">
               <UserPlus className="h-5 w-5" />
             </div>
             <div className="space-y-1">
@@ -287,7 +287,7 @@ const ClassContentManagement = () => {
                 Nhập mã lớp để tham gia và xem tài liệu, video bài giảng.
               </p>
             </div>
-            <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-violet-300 to-transparent" />
+            <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-[#c4b5fd] to-transparent" />
           </div>
 
           <div className="space-y-3">
@@ -304,7 +304,7 @@ const ClassContentManagement = () => {
               <p className="text-sm text-slate-600">{enrollMessage}</p>
             ) : null}
             <Button
-              className="h-10 w-full cursor-pointer rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+              className="h-10 w-full cursor-pointer rounded-xl bg-[#6c5ce7] text-white hover:bg-[#5b4bd1]"
               disabled={isEnrolling}
               onClick={handleEnroll}
             >
@@ -326,7 +326,7 @@ const ClassContentManagement = () => {
             setActiveSessionId("");
           }}
         >
-          <SelectTrigger className="h-10 min-w-60 cursor-pointer rounded-xl border-slate-200/80 bg-white px-4 text-sm font-medium shadow-sm">
+          <SelectTrigger className="h-10 min-w-60 cursor-pointer rounded-xl border-slate-200 bg-white px-4 text-sm font-medium shadow-sm">
             <SelectValue placeholder="Chọn lớp học" />
           </SelectTrigger>
           <SelectContent
@@ -347,14 +347,14 @@ const ClassContentManagement = () => {
             ))}
           </SelectContent>
         </Select>
-        <div className="hidden items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-500 md:flex">
-          <MonitorPlay className="h-3.5 w-3.5 text-violet-500" />
+        <div className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-[#6c5ce7] md:flex">
+          <MonitorPlay className="h-3.5 w-3.5 text-[#6c5ce7]" />
           Nội dung buổi học
         </div>
       </header>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
-        <section className="min-h-0 overflow-y-auto border-r border-slate-200/80 bg-slate-50/30 px-3 py-4 sm:px-4">
+        <section className="min-h-0 overflow-y-auto border-r border-slate-200/80 bg-white px-3 py-4 sm:px-4">
           <LessonModuleSidebar
             modules={sidebarModules}
             activeSessionId={resolvedSessionId}
@@ -385,7 +385,7 @@ const ClassContentManagement = () => {
             />
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/50 p-4 sm:p-5">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/40 p-4 sm:p-5">
             {activeTab === "materials" ? (
               <LessonMaterialsList
                 snapLessonId={activeSession.session.id}

@@ -49,9 +49,8 @@ function StudentQuizActions({
           size="sm"
           className={cn(
             "h-8 cursor-pointer rounded-lg px-2.5 text-xs",
-            isActive
-              ? "text-white hover:bg-white/15 hover:text-white"
-              : lessonNavyGhostButton,
+            lessonNavyGhostButton,
+            isActive && "font-semibold",
           )}
           disabled={!canTakeQuiz}
           onClick={() => onResultClick(quiz)}
@@ -62,13 +61,11 @@ function StudentQuizActions({
       {onQuizClick ? (
         <Button
           type="button"
-          variant="outline"
+          variant={isActive ? "default" : "outline"}
           size="sm"
           className={cn(
             "h-8 cursor-pointer rounded-lg px-2.5 text-xs",
-            isActive
-              ? "border-white/80 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-              : lessonNavyOutlineButton,
+            isActive ? lessonNavyButton : lessonNavyOutlineButton,
           )}
           disabled={!canTakeQuiz}
           onClick={() => onQuizClick(quiz)}
@@ -83,7 +80,6 @@ function StudentQuizActions({
 
 function QuizMeta({
   quiz,
-  isActive = false,
 }: {
   quiz: LessonQuizListItem;
   isActive?: boolean;
@@ -96,33 +92,21 @@ function QuizMeta({
         : null;
 
   return (
-    <p
-      className={cn(
-        "mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs",
-        isActive ? "text-blue-100" : "text-slate-400",
-      )}
-    >
+    <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-400">
       {quizTypeLabel ? (
-        <span
-          className={cn(
-            "rounded-md px-1.5 py-0.5 font-medium",
-            isActive
-              ? "bg-white/15 text-white ring-1 ring-white/25"
-              : "bg-slate-100 text-slate-600",
-          )}
-        >
+        <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">
           {quizTypeLabel}
         </span>
       ) : null}
       {typeof quiz.durationMinutes === "number" ? (
         <span className="inline-flex items-center gap-1">
-          <Clock className="h-3 w-3" />
+          <Clock className="h-3 w-3 text-[#6c5ce7]" />
           {quiz.durationMinutes} phút
         </span>
       ) : null}
       {typeof quiz.passScore === "number" ? (
         <span className="inline-flex items-center gap-1">
-          <Target className="h-3 w-3" />
+          <Target className="h-3 w-3 text-[#6c5ce7]" />
           Đạt {quiz.passScore}đ
         </span>
       ) : null}
@@ -130,14 +114,7 @@ function QuizMeta({
         <span>{quiz.maxAttempts} lần làm</span>
       ) : null}
       {quiz.required === true ? (
-        <span
-          className={cn(
-            "font-medium",
-            isActive ? "text-amber-200" : "text-amber-600",
-          )}
-        >
-          Bắt buộc
-        </span>
+        <span className="font-medium text-amber-600">Bắt buộc</span>
       ) : null}
     </p>
   );
@@ -163,10 +140,10 @@ export function LessonQuizList({
   if (isTeacher) {
     return (
       <Card className="overflow-hidden border-slate-200/90 shadow-sm">
-        <div className="border-b border-blue-100 bg-linear-to-r from-blue-50/90 via-white to-slate-50 px-5 py-4 sm:px-6">
+        <div className="border-b border-[#ebe7ff] bg-linear-to-r from-slate-50 via-white to-slate-50 px-5 py-4 sm:px-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-900">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[rgba(108,92,231,0.08)] text-[#6c5ce7]">
                 <ClipboardList className="h-5 w-5" />
               </div>
               <div>
@@ -213,8 +190,8 @@ export function LessonQuizList({
 
         <div className="p-5 sm:p-6">
           {quizzes.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-blue-200/80 bg-blue-50/30 px-6 py-14 text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-blue-900 shadow-sm ring-1 ring-blue-100">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-[#d5ceff]/80 bg-slate-50/80 px-6 py-14 text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#6c5ce7] shadow-sm ring-1 ring-[#ebe7ff]">
                 <ClipboardList className="h-7 w-7" />
               </div>
               <p className="text-base font-medium text-slate-800">
@@ -255,7 +232,7 @@ export function LessonQuizList({
             </div>
           ) : (
             <div className="relative pl-8">
-              <div className="absolute top-2 bottom-2 left-3 w-px bg-blue-300/80" />
+              <div className="absolute top-2 bottom-2 left-3 w-px bg-[#c4b5fd]/80" />
               <div className="space-y-2">
                 <p className="mb-3 text-xs font-medium tracking-wide text-slate-400 uppercase">
                   {quizzes.length} bài tập
@@ -263,11 +240,11 @@ export function LessonQuizList({
                 {quizzes.map((quiz, index) => (
                   <article
                     key={quiz.snapLessonQuizId ?? quiz.quizId}
-                    className="relative rounded-xl border border-slate-200/90 bg-white p-4 pl-5 shadow-sm transition hover:border-blue-200"
+                    className="relative rounded-xl border border-slate-200/90 bg-white p-4 pl-5 shadow-sm transition hover:border-[#d5ceff]"
                   >
-                    <span className="absolute top-5 -left-5 h-px w-4 bg-blue-300/80" />
+                    <span className="absolute top-5 -left-5 h-px w-4 bg-[#c4b5fd]/80" />
                     <div className="flex items-start gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-50 text-xs font-bold text-blue-900 ring-1 ring-blue-100">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[rgba(108,92,231,0.08)] text-xs font-bold text-[#6c5ce7] ring-1 ring-[#ebe7ff]">
                         {index + 1}
                       </span>
                       <div className="min-w-0 flex-1">
@@ -349,10 +326,10 @@ export function LessonQuizList({
 
   return (
     <Card className="overflow-hidden border-slate-200 shadow-sm">
-      <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-blue-50/40 px-4 py-3 sm:px-5">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-slate-50/70 px-4 py-3 sm:px-5">
         <div className="flex min-w-0 items-center gap-2">
-          <ClipboardList className="h-4 w-4 shrink-0 text-blue-800" />
-          <span className="shrink-0 text-sm font-semibold text-blue-950">
+          <ClipboardList className="h-4 w-4 shrink-0 text-[#6c5ce7]" />
+          <span className="shrink-0 text-sm font-semibold text-slate-900">
             Bài tập
           </span>
           {lessonTitle ? (
@@ -375,21 +352,21 @@ export function LessonQuizList({
         </div>
       ) : (
         <div className="relative px-4 py-4">
-          <div className="absolute top-5 bottom-5 left-[23px] w-px bg-blue-300/80" />
+          <div className="absolute top-5 bottom-5 left-[23px] w-px bg-slate-200" />
           <div className="relative pl-8">
             <button
               type="button"
-              className="flex w-full items-center gap-2 rounded-md bg-blue-50/80 px-3 py-2 text-left ring-1 ring-blue-200/80"
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left"
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded bg-blue-900 text-[11px] font-semibold text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#6c5ce7] text-[11px] font-semibold text-white shadow-[0_4px_12px_rgba(108,92,231,0.25)]">
                 1
               </span>
-              <span className="truncate text-sm font-semibold text-blue-950">
+              <span className="truncate text-sm font-semibold text-slate-900">
                 {lessonTitle}
               </span>
             </button>
 
-            <div className="ml-3 mt-2 space-y-1 border-l border-blue-200/80 py-1 pl-4">
+            <div className="ml-3 mt-2 space-y-1.5 border-l border-slate-200 py-1 pl-4">
               {quizzes.map((quiz, index) => {
                 const isActiveQuiz = activeQuizId === quiz.quizId;
 
@@ -406,16 +383,18 @@ export function LessonQuizList({
                       }
                     }}
                     className={cn(
-                      "flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2 transition-colors",
+                      "flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2.5 transition-colors",
                       isActiveQuiz
-                        ? "bg-blue-900 text-white shadow-sm ring-1 ring-blue-900"
-                        : "text-slate-700 hover:bg-blue-50",
+                        ? "bg-[rgba(108,92,231,0.06)] ring-1 ring-[rgba(108,92,231,0.14)]"
+                        : "text-slate-700 hover:bg-slate-50",
                     )}
                   >
                     <span
                       className={cn(
-                        "w-5 shrink-0 text-center text-[11px] font-semibold",
-                        isActiveQuiz ? "text-blue-100" : "text-slate-400",
+                        "flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-center text-[11px] font-semibold",
+                        isActiveQuiz
+                          ? "bg-[#6c5ce7] text-white shadow-[0_4px_10px_rgba(108,92,231,0.25)]"
+                          : "bg-slate-100 text-slate-500",
                       )}
                     >
                       {index + 1}
@@ -423,13 +402,15 @@ export function LessonQuizList({
                     <div className="min-w-0 flex-1">
                       <p
                         className={cn(
-                          "truncate text-sm font-medium",
-                          isActiveQuiz ? "text-white" : "text-slate-900",
+                          "truncate text-sm",
+                          isActiveQuiz
+                            ? "font-semibold text-slate-900"
+                            : "font-medium text-slate-900",
                         )}
                       >
                         {quiz.title}
                       </p>
-                      <QuizMeta quiz={quiz} isActive={isActiveQuiz} />
+                      <QuizMeta quiz={quiz} />
                     </div>
                     <div onClick={(event) => event.stopPropagation()}>
                       <StudentQuizActions
