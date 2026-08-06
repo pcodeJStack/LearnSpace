@@ -26,12 +26,15 @@ import { useLogin } from "@/hooks/useLogin";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import {
+  ClipboardList,
   Eye,
   EyeOff,
+  FileText,
   GraduationCap,
   Loader2,
   Lock,
   Mail,
+  Play,
   ShieldCheck,
   User,
   Users,
@@ -48,10 +51,25 @@ type AdminLoginFormValues = {
   password: string;
 };
 
-const highlights = [
-  "Video bài giảng theo buổi",
-  "Tài liệu gắn đúng session",
-  "Quiz trắc nghiệm & tự luận",
+const leftFeatures = [
+  {
+    step: "01",
+    icon: Play,
+    title: "Video theo buổi",
+    description: "Xem trước và xem lại đúng từng session.",
+  },
+  {
+    step: "02",
+    icon: FileText,
+    title: "Tài liệu gắn sẵn",
+    description: "Slide, PDF nằm ngay trong buổi học.",
+  },
+  {
+    step: "03",
+    icon: ClipboardList,
+    title: "Quiz online",
+    description: "Trắc nghiệm và tự luận trên một hệ thống.",
+  },
 ];
 
 const roleTabs = [
@@ -70,10 +88,10 @@ const roleTabs = [
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const loginInputClass =
-  "h-12 rounded-xl border-slate-200 bg-white text-[15px] leading-normal text-slate-900 placeholder:text-slate-400 shadow-none focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none";
+  "h-12 rounded-xl border-slate-200 bg-white text-[15px] leading-normal text-slate-900 placeholder:text-slate-400 shadow-none focus-visible:border-[#6c5ce7] focus-visible:ring-2 focus-visible:ring-[rgba(108,92,231,0.2)] focus-visible:outline-none";
 
 const loginInputIconClass =
-  "pointer-events-none absolute top-1/2 left-3.5 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 transition-colors duration-200 group-focus-within:text-teal-600";
+  "pointer-events-none absolute top-1/2 left-3.5 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 transition-colors duration-200 group-focus-within:text-[#6c5ce7]";
 
 const LoginPage = () => {
   const reduceMotion = useReducedMotion();
@@ -152,196 +170,116 @@ const LoginPage = () => {
         transition: { duration: 0.75, delay: 0.12, ease },
       };
 
-  const orbMotion = (duration: number, x: number, y: number) =>
-    reduceMotion
-      ? {}
-      : {
-          animate: {
-            x: [0, x, 0],
-            y: [0, y, 0],
-            scale: [1, 1.08, 1],
-          },
-          transition: {
-            duration,
-            repeat: Infinity,
-            ease: "easeInOut" as const,
-          },
-        };
-
   return (
     <div className="min-h-screen overflow-hidden bg-white text-slate-900 lg:grid lg:grid-cols-2">
-      {/* LEFT — teal brand panel */}
+      {/* LEFT — soft feature rail */}
       <motion.section
-        className="relative hidden overflow-hidden bg-teal-700 lg:flex lg:flex-col"
+        className="relative hidden overflow-hidden border-r border-[#ebe7ff] bg-[#faf9fc] lg:flex lg:flex-col"
         {...leftPanel}
       >
-        <motion.div
-          className="absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ backgroundImage: "url(/images/landing-hero.jpg)" }}
-          initial={reduceMotion ? false : { scale: 1.12 }}
-          animate={reduceMotion ? undefined : { scale: 1 }}
-          transition={{ duration: 1.4, ease }}
-        />
-        <div className="absolute inset-0 bg-linear-to-br from-teal-800/95 via-teal-600/90 to-cyan-600/85" />
-
-        <motion.div
-          className="absolute -left-16 top-24 h-56 w-56 rounded-full bg-white/10 blur-3xl"
-          {...orbMotion(10, 28, -22)}
-        />
-        <motion.div
-          className="absolute bottom-16 right-8 h-40 w-40 rounded-full bg-orange-400/25 blur-3xl"
-          {...orbMotion(12, -24, 18)}
-        />
-        <motion.div
-          className="absolute right-20 top-1/3 h-28 w-28 rounded-full bg-cyan-300/20 blur-2xl"
-          {...orbMotion(8, 16, 28)}
-        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden
+        >
+          <div className="absolute -top-20 -left-16 h-72 w-72 rounded-full bg-[#6c5ce7]/10 blur-3xl" />
+          <div className="absolute right-0 bottom-10 h-64 w-64 rounded-full bg-[#a78bfa]/15 blur-3xl" />
+        </div>
 
         <div className="relative z-10 flex flex-1 flex-col px-10 py-10 xl:px-14">
-          <motion.div
-            className="flex flex-1 flex-col"
-            initial={reduceMotion ? false : "hidden"}
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.1, delayChildren: 0.28 },
-              },
-            }}
-          >
-            <motion.div
-              variants={
-                reduceMotion
-                  ? undefined
-                  : {
-                      hidden: { opacity: 0, x: -40 },
-                      visible: {
-                        opacity: 1,
-                        x: 0,
-                        transition: { duration: 0.55, ease },
-                      },
-                    }
-              }
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="relative flex h-9 w-9 overflow-hidden rounded-full bg-[#ebe7ff] ring-1 ring-[#d5ceff]">
+              <Image
+                src="/icons/eduIcon02.png"
+                alt="Course Learning"
+                width={36}
+                height={36}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </div>
+            <span className="text-[15px] font-bold tracking-tight text-slate-800">
+              Course Learning
+            </span>
+          </Link>
+
+          <div className="flex flex-1 flex-col justify-center py-12">
+            <motion.p
+              className="text-sm font-semibold tracking-wide text-[#6c5ce7]"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.15, ease }}
             >
-              <Link href="/" className="flex items-center gap-2.5">
-                <div className="relative flex h-9 w-9 overflow-hidden rounded-full bg-white/15 ring-1 ring-white/30">
-                  <Image
-                    src="/icons/eduIcon02.png"
-                    alt="Course Learning"
-                    width={36}
-                    height={36}
-                    className="h-full w-full object-cover"
-                    priority
-                  />
-                </div>
-                <span className="text-[15px] font-bold tracking-tight text-white">
-                  Course Learning
-                </span>
-              </Link>
-            </motion.div>
+              Nền tảng lớp học
+            </motion.p>
+            <motion.h1
+              className="mt-3 max-w-md text-[clamp(2rem,3.2vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-slate-900"
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.22, ease }}
+            >
+              Học theo buổi.
+              <span className="mt-1 block text-[#6c5ce7]">
+                Mọi thứ đúng chỗ.
+              </span>
+            </motion.h1>
+            <motion.p
+              className="mt-4 max-w-sm text-[15px] leading-relaxed text-slate-500"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.3, ease }}
+            >
+              Video, tài liệu và quiz gắn với từng buổi — đăng nhập để tiếp tục.
+            </motion.p>
 
-            <div className="flex flex-1 flex-col justify-center py-16">
-              <motion.span
-                variants={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        hidden: { opacity: 0, x: -40 },
-                        visible: {
-                          opacity: 1,
-                          x: 0,
-                          transition: { duration: 0.55, ease },
-                        },
-                      }
-                }
-                className="inline-flex w-fit rounded-full bg-orange-500 px-3.5 py-1 text-[11px] font-bold tracking-wide text-white uppercase"
-              >
-                One stop solution
-              </motion.span>
-
-              <motion.h1
-                variants={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        hidden: { opacity: 0, x: -40 },
-                        visible: {
-                          opacity: 1,
-                          x: 0,
-                          transition: { duration: 0.55, ease },
-                        },
-                      }
-                }
-                className="mt-5 text-[clamp(2.2rem,3.5vw,3.1rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-white"
-              >
-                Học tập thông minh
-                <br />
-                <span className="text-orange-300">Course Learning</span>
-              </motion.h1>
-
-              <motion.p
-                variants={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        hidden: { opacity: 0, x: -40 },
-                        visible: {
-                          opacity: 1,
-                          x: 0,
-                          transition: { duration: 0.55, ease },
-                        },
-                      }
-                }
-                className="mt-4 max-w-md text-base leading-relaxed text-teal-50/90"
-              >
-                Video, tài liệu và quiz theo từng buổi — đăng nhập để tiếp tục
-                học và giảng dạy.
-              </motion.p>
-
-              <motion.ul
-                variants={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        hidden: { opacity: 0, x: -40 },
-                        visible: {
-                          opacity: 1,
-                          x: 0,
-                          transition: { duration: 0.55, ease },
-                        },
-                      }
-                }
-                className="mt-10 max-w-sm space-y-0 border-t border-white/20"
-              >
-                {highlights.map((item, index) => (
+            <ol className="relative mt-10 max-w-md space-y-0">
+              <span
+                className="absolute top-5 bottom-5 left-5 w-px bg-[#ebe7ff]"
+                aria-hidden
+              />
+              {leftFeatures.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
                   <motion.li
-                    key={item}
-                    className="border-b border-white/20 py-3.5 text-sm font-medium text-white/90"
-                    initial={reduceMotion ? false : { opacity: 0, x: -28 }}
+                    key={feature.step}
+                    className="relative flex gap-4 py-4"
+                    initial={reduceMotion ? false : { opacity: 0, x: -18 }}
                     animate={reduceMotion ? undefined : { opacity: 1, x: 0 }}
                     transition={{
-                      duration: 0.45,
-                      delay: 0.7 + index * 0.12,
+                      duration: 0.4,
+                      delay: 0.4 + index * 0.1,
                       ease,
                     }}
                   >
-                    {item}
+                    <span className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#6c5ce7] text-white shadow-[0_8px_20px_rgba(108,92,231,0.28)]">
+                      <Icon className="h-4 w-4" strokeWidth={2} />
+                    </span>
+                    <div className="min-w-0 pt-0.5">
+                      <p className="text-[11px] font-bold tracking-wide text-[#6c5ce7]">
+                        {feature.step}
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-slate-900">
+                        {feature.title}
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-500">
+                        {feature.description}
+                      </p>
+                    </div>
                   </motion.li>
-                ))}
-              </motion.ul>
-            </div>
-          </motion.div>
+                );
+              })}
+            </ol>
+          </div>
         </div>
       </motion.section>
 
-      {/* RIGHT — form */}
+      {/* RIGHT — classic form */}
       <motion.section
         className="relative flex min-h-screen flex-col px-6 py-8 sm:px-10 lg:px-14 xl:px-20"
         {...rightPanel}
       >
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 lg:hidden">
-            <div className="relative flex h-8 w-8 overflow-hidden rounded-full bg-teal-50 ring-1 ring-teal-100">
+            <div className="relative flex h-8 w-8 overflow-hidden rounded-full bg-[#ebe7ff] ring-1 ring-[#d5ceff]">
               <Image
                 src="/icons/eduIcon02.png"
                 alt="Course Learning"
@@ -356,7 +294,7 @@ const LoginPage = () => {
           </Link>
           <Link
             href="/"
-            className="ml-auto text-sm font-medium text-slate-400 transition hover:text-teal-700"
+            className="ml-auto text-sm font-medium text-slate-400 transition hover:text-[#6c5ce7]"
           >
             Về trang chủ
           </Link>
@@ -410,7 +348,6 @@ const LoginPage = () => {
                   }
             }
           >
-
           <Form {...form}>
             <form
               onSubmit={(event) => {
@@ -456,7 +393,7 @@ const LoginPage = () => {
                                 className={cn(
                                   "flex items-center justify-center gap-2 border-b-2 px-2 py-3 text-sm font-semibold transition-colors",
                                   active
-                                    ? "border-orange-500 text-orange-600"
+                                    ? "border-[#6c5ce7] text-[#6c5ce7]"
                                     : "border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700",
                                 )}
                               >
@@ -579,7 +516,7 @@ const LoginPage = () => {
                 type="submit"
                 disabled={isLoginPending}
                 aria-busy={isLoginPending}
-                className="h-12 w-full cursor-pointer rounded-full border-0 bg-orange-500 text-[15px] font-bold text-white shadow-[0_10px_24px_rgba(249,115,22,0.3)] transition hover:bg-orange-600 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
+                className="h-12 w-full cursor-pointer rounded-full border-0 bg-[#6c5ce7] text-[15px] font-bold text-white shadow-[0_10px_24px_rgba(108,92,231,0.28)] transition hover:bg-[#5b4bd1] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
               >
                 {isLoginPending ? (
                   <span className="inline-flex items-center gap-2">
@@ -620,18 +557,18 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={resetAdminValidation}
-                  className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-slate-400 transition hover:text-teal-700"
+                  className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium text-slate-400 transition hover:text-[#6c5ce7]"
                 >
                   <ShieldCheck className="h-3.5 w-3.5" />
                   Đăng nhập quản trị viên
                 </button>
               </DialogTrigger>
               <DialogContent className="gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-xl sm:max-w-[380px]">
-                <div className="h-1 w-full bg-orange-500" />
+                <div className="h-1 w-full bg-[#6c5ce7]" />
 
                 <div className="space-y-4 p-6">
                   <DialogHeader className="flex-row items-center gap-3 space-y-0 text-left">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#ebe7ff] text-[#6c5ce7]">
                       <ShieldCheck className="h-5 w-5" />
                     </div>
                     <div className="space-y-1 pr-8">
@@ -677,7 +614,7 @@ const LoginPage = () => {
                                   type="email"
                                   placeholder="admin@domain.com"
                                   autoComplete="email"
-                                  className="h-11 rounded-xl border-slate-200 bg-white pr-3 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none"
+                                  className="h-11 rounded-xl border-slate-200 bg-white pr-3 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-[#6c5ce7] focus-visible:ring-2 focus-visible:ring-[rgba(108,92,231,0.2)] focus-visible:outline-none"
                                 />
                               </div>
                             </FormControl>
@@ -723,7 +660,7 @@ const LoginPage = () => {
                                   }
                                   placeholder="••••••••"
                                   autoComplete="current-password"
-                                  className="h-11 rounded-xl border-slate-200 bg-white pr-9 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-teal-500 focus-visible:ring-2 focus-visible:ring-teal-500/20 focus-visible:outline-none"
+                                  className="h-11 rounded-xl border-slate-200 bg-white pr-9 pl-9 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:border-[#6c5ce7] focus-visible:ring-2 focus-visible:ring-[rgba(108,92,231,0.2)] focus-visible:outline-none"
                                 />
                                 <button
                                   type="button"
@@ -749,7 +686,7 @@ const LoginPage = () => {
                         type="submit"
                         disabled={isAdminPending}
                         aria-busy={isAdminPending}
-                        className="h-11 w-full cursor-pointer rounded-full border-0 bg-orange-500 text-sm font-bold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-80"
+                        className="h-11 w-full cursor-pointer rounded-full border-0 bg-[#6c5ce7] text-sm font-bold text-white hover:bg-[#5b4bd1] disabled:cursor-not-allowed disabled:opacity-80"
                       >
                         {isAdminPending ? (
                           <span className="inline-flex items-center gap-2">

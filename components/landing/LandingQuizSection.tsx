@@ -23,8 +23,8 @@ const formats = [
   {
     icon: ListChecks,
     title: "Trắc nghiệm",
-    accent: "text-orange-500",
-    line: "border-orange-200",
+    accent: "text-[#6c5ce7]",
+    line: "border-[#ebe7ff]",
     tag: "Chấm tự động",
     description:
       "Nhiều lựa chọn — hệ thống chấm điểm ngay khi học sinh nộp bài.",
@@ -34,8 +34,8 @@ const formats = [
   {
     icon: PenLine,
     title: "Tự luận",
-    accent: "text-teal-600",
-    line: "border-teal-200",
+    accent: "text-[#5b4bd1]",
+    line: "border-[#d5ceff]",
     tag: "Chấm thủ công",
     description:
       "Câu hỏi mở — giáo viên đọc bài và chấm sau khi học sinh nộp.",
@@ -48,15 +48,15 @@ export function LandingQuizSection() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="quiz" className="bg-slate-50/70 px-6 py-16 lg:px-8 lg:py-24">
+    <section id="quiz" className="bg-[#f4f2f8]/70 px-6 py-16 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-xl">
-          <p className="text-xs font-bold tracking-[0.18em] text-teal-600 uppercase">
+          <p className="text-xs font-bold tracking-[0.18em] text-[#6c5ce7] uppercase">
             Quiz &amp; bài tập
           </p>
           <h2 className="mt-3 text-[1.85rem] font-extrabold leading-[1.15] tracking-[-0.03em] text-slate-900 sm:text-[2.35rem]">
             Làm bài. Nộp bài.
-            <span className="block text-orange-500">Xem kết quả ngay.</span>
+            <span className="block text-[#6c5ce7]">Xem kết quả ngay.</span>
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-slate-500 sm:text-base">
             Trắc nghiệm chấm tự động, tự luận chấm thủ công — giáo viên gắn bài
@@ -65,7 +65,7 @@ export function LandingQuizSection() {
         </div>
 
         {/* Flow — open line, no boxes */}
-        <div className="mt-12 border-y border-slate-200 py-10">
+        <div className="mt-12 border-y border-[#ebe7ff] py-10">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 sm:gap-4">
             {quizFlow.map((step, index) => {
               const StepIcon = step.icon;
@@ -82,7 +82,7 @@ export function LandingQuizSection() {
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <StepIcon
-                    className="mx-auto mt-3 h-5 w-5 text-teal-600 sm:mx-0"
+                    className="mx-auto mt-3 h-5 w-5 text-[#6c5ce7] sm:mx-0"
                     strokeWidth={1.75}
                   />
                   <p className="mt-3 text-base font-bold tracking-tight text-slate-900">

@@ -25,7 +25,7 @@ function NavLink({
     "px-2.5 py-2 text-[13px] font-medium transition-colors",
     light
       ? "text-white/90 hover:text-white"
-      : "text-slate-600 hover:text-teal-700",
+      : "text-slate-600 hover:text-[#6c5ce7]",
   );
 
   if (href.startsWith("/")) {
@@ -68,7 +68,7 @@ export function LandingHeader() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled || mobileOpen
-          ? "border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-xl"
+          ? "border-b border-[#ebe7ff]/80 bg-white/95 shadow-sm backdrop-blur-xl"
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -83,7 +83,7 @@ export function LandingHeader() {
               "relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full",
               onHero
                 ? "bg-white/15 ring-1 ring-white/30"
-                : "bg-teal-50 ring-1 ring-teal-100",
+                : "bg-[#ebe7ff] ring-1 ring-[#d5ceff]",
             )}
           >
             <Image
@@ -122,7 +122,7 @@ export function LandingHeader() {
         <div className="ml-auto flex items-center gap-2">
           <Link
             href={landingLoginHref}
-            className="hidden h-10 items-center justify-center rounded-full bg-orange-500 px-5 text-[13px] font-semibold text-white shadow-[0_8px_20px_rgba(249,115,22,0.35)] transition hover:bg-orange-600 sm:inline-flex"
+            className="hidden h-10 items-center justify-center rounded-2xl bg-[#6c5ce7] px-5 text-[13px] font-semibold text-white shadow-[0_8px_20px_rgba(108,92,231,0.28)] transition hover:bg-[#5b4bd1] sm:inline-flex"
           >
             Đăng nhập
           </Link>
@@ -145,7 +145,7 @@ export function LandingHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-slate-200 bg-white lg:hidden">
+        <div className="border-t border-[#ebe7ff] bg-white lg:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
             {landingNavLinks.map((link) => (
               <NavLink
@@ -158,7 +158,7 @@ export function LandingHeader() {
             ))}
             <Link
               href={landingLoginHref}
-              className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-orange-500 text-sm font-semibold text-white"
+              className="mt-2 inline-flex h-11 items-center justify-center rounded-2xl bg-[#6c5ce7] text-sm font-semibold text-white hover:bg-[#5b4bd1]"
               onClick={() => setMobileOpen(false)}
             >
               Đăng nhập

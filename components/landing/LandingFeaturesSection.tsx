@@ -1,5 +1,4 @@
 import {
-  Calendar,
   ClipboardList,
   FileText,
   GraduationCap,
@@ -7,36 +6,21 @@ import {
   Users,
 } from "lucide-react";
 
-const highlightSteps = [
+const pillars = [
   {
-    n: "01",
     icon: Play,
-    title: "Video",
-    color: "from-orange-400 to-orange-500",
+    title: "Video theo buổi",
+    description: "Xem trước và xem lại đúng session.",
   },
   {
-    n: "02",
     icon: FileText,
-    title: "Tài liệu",
-    color: "from-teal-400 to-teal-600",
+    title: "Tài liệu gắn sẵn",
+    description: "Slide, PDF nằm trong buổi học.",
   },
   {
-    n: "03",
     icon: ClipboardList,
-    title: "Quiz",
-    color: "from-sky-400 to-sky-600",
-  },
-  {
-    n: "04",
-    icon: Calendar,
-    title: "Lịch học",
-    color: "from-amber-400 to-amber-500",
-  },
-  {
-    n: "05",
-    icon: Users,
-    title: "Lớp học",
-    color: "from-rose-400 to-rose-500",
+    title: "Quiz online",
+    description: "Trắc nghiệm và tự luận trên hệ thống.",
   },
 ];
 
@@ -57,64 +41,63 @@ const studentSteps = [
 export function LandingFeaturesSection() {
   return (
     <>
-      <section id="solutions" className="bg-white px-6 py-16 lg:px-8 lg:py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-[1.85rem] font-extrabold leading-tight tracking-[-0.03em] text-slate-900 sm:text-4xl">
-            Luôn sẵn sàng cho buổi học tiếp theo
-          </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-slate-500 sm:text-base">
-            Course Learning gom video, tài liệu và quiz theo buổi — lớp học vận
-            hành gọn, ai cũng biết mình cần làm gì.
-          </p>
-        </div>
+      <section id="solutions" className="bg-[#faf9fc] px-6 py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold tracking-wide text-[#6c5ce7]">
+              Giải pháp
+            </p>
+            <h2 className="mt-3 text-[1.85rem] font-extrabold leading-tight tracking-[-0.03em] text-slate-900 sm:text-4xl">
+              Luôn sẵn sàng cho buổi học tiếp theo
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-slate-500 sm:text-base">
+              Course Learning gom video, tài liệu và quiz theo buổi — lớp học
+              vận hành gọn, ai cũng biết mình cần làm gì.
+            </p>
+          </div>
 
-        <div className="mx-auto mt-12 flex max-w-4xl flex-wrap items-end justify-center gap-4 sm:gap-6">
-          {highlightSteps.map((step) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.n}
-                className="group flex w-[5.5rem] flex-col items-center sm:w-24"
-              >
-                <div
-                  className={`relative flex h-20 w-20 items-end justify-center overflow-hidden rounded-t-full bg-linear-to-b ${step.color} transition group-hover:-translate-y-1 sm:h-24 sm:w-24`}
-                >
-                  <span className="absolute top-3 text-[11px] font-bold text-white/90">
-                    {step.n}
-                  </span>
-                  <Icon className="mb-4 h-6 w-6 text-white sm:h-7 sm:w-7" />
+          <div className="mt-14 grid gap-10 sm:grid-cols-3">
+            {pillars.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="border-t border-[#ebe7ff] pt-6">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6c5ce7] text-white shadow-[0_10px_22px_rgba(108,92,231,0.25)]">
+                    <Icon className="h-5 w-5" strokeWidth={2} />
+                  </div>
+                  <h3 className="mt-5 text-lg font-bold tracking-tight text-slate-900">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                    {item.description}
+                  </p>
                 </div>
-                <p className="mt-3 text-center text-xs font-semibold text-slate-600 sm:text-sm">
-                  {step.title}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      <section id="features" className="bg-white px-6 py-16 lg:px-8 lg:py-24">
+      <section id="features" className="bg-white px-6 py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-xl">
-            <p className="text-xs font-bold tracking-[0.18em] text-orange-500 uppercase">
+            <p className="text-sm font-semibold tracking-wide text-[#6c5ce7]">
               Khóa học
             </p>
             <h2 className="mt-3 text-[1.85rem] font-extrabold leading-[1.15] tracking-[-0.03em] text-slate-900 sm:text-[2.35rem]">
               Mỗi buổi học.
-              <span className="block text-teal-600">Một bộ nội dung đầy đủ.</span>
+              <span className="block text-[#6c5ce7]">Một bộ nội dung đầy đủ.</span>
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-slate-500 sm:text-base">
-              Không còn rải video và file khắp nơi. Module → session → tài nguyên
-              nằm đúng chỗ, giáo viên và học sinh cùng một lộ trình.
+              Module → session → tài nguyên nằm đúng chỗ. Giáo viên và học sinh
+              cùng một lộ trình.
             </p>
           </div>
 
-          {/* Open journey strip */}
-          <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-slate-200 py-8">
+          <div className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-3 border-y border-[#ebe7ff] py-8">
             {journey.map((label, i) => (
               <div key={label} className="flex items-center gap-3">
                 <div className="flex items-baseline gap-2.5">
-                  <span className="text-2xl font-extrabold tracking-tight text-teal-600/80 sm:text-3xl">
+                  <span className="text-2xl font-extrabold tracking-tight text-[#6c5ce7] sm:text-3xl">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-base font-semibold text-slate-800 sm:text-lg">
@@ -122,7 +105,7 @@ export function LandingFeaturesSection() {
                   </span>
                 </div>
                 {i < journey.length - 1 ? (
-                  <span className="hidden text-slate-300 sm:inline" aria-hidden>
+                  <span className="hidden text-[#d5ceff] sm:inline" aria-hidden>
                     —
                   </span>
                 ) : null}
@@ -130,11 +113,10 @@ export function LandingFeaturesSection() {
             ))}
           </div>
 
-          {/* Role columns — no cards */}
           <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <div className="flex items-center gap-3 border-b border-orange-200 pb-4">
-                <GraduationCap className="h-5 w-5 text-orange-500" />
+              <div className="flex items-center gap-3 border-b border-[#ebe7ff] pb-4">
+                <GraduationCap className="h-5 w-5 text-[#6c5ce7]" />
                 <div>
                   <h3 className="text-lg font-bold tracking-tight text-slate-900">
                     Giáo viên
@@ -150,7 +132,7 @@ export function LandingFeaturesSection() {
                     key={step.title}
                     className="grid grid-cols-[3rem_1fr] gap-4 border-b border-slate-100 py-5 last:border-b-0"
                   >
-                    <span className="pt-0.5 text-sm font-bold text-orange-400">
+                    <span className="pt-0.5 text-sm font-bold text-[#6c5ce7]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div>
@@ -167,8 +149,8 @@ export function LandingFeaturesSection() {
             </div>
 
             <div>
-              <div className="flex items-center gap-3 border-b border-teal-200 pb-4">
-                <Users className="h-5 w-5 text-teal-600" />
+              <div className="flex items-center gap-3 border-b border-[#ebe7ff] pb-4">
+                <Users className="h-5 w-5 text-[#6c5ce7]" />
                 <div>
                   <h3 className="text-lg font-bold tracking-tight text-slate-900">
                     Học sinh
@@ -184,7 +166,7 @@ export function LandingFeaturesSection() {
                     key={step.title}
                     className="grid grid-cols-[3rem_1fr] gap-4 border-b border-slate-100 py-5 last:border-b-0"
                   >
-                    <span className="pt-0.5 text-sm font-bold text-teal-500">
+                    <span className="pt-0.5 text-sm font-bold text-[#a78bfa]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div>
