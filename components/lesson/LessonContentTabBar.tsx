@@ -55,7 +55,7 @@ export function LessonContentTabBar({
       <div
         role="tablist"
         aria-label="Nội dung buổi học"
-        className="flex flex-wrap items-center justify-end gap-2"
+        className="flex w-max min-w-full flex-nowrap items-center justify-end gap-2"
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -75,7 +75,7 @@ export function LessonContentTabBar({
               aria-selected={isActive}
               onClick={() => onChange(tab.key)}
               className={cn(
-                "inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-semibold tracking-tight transition-all",
+                "inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold tracking-tight transition-all sm:px-4",
                 isActive
                   ? "border-blue-900 bg-blue-900 text-white shadow-md"
                   : "border-blue-200/90 bg-white text-blue-950 hover:border-blue-300 hover:bg-blue-50/80",

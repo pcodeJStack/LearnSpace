@@ -17,6 +17,8 @@ export type TeacherMenuKey =
   | "profile"
   | "password";
 
+const softGlow = "shadow-[0_8px_20px_rgba(108,92,231,0.12)]";
+
 export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
   {
     title: "Điểm neo",
@@ -28,8 +30,8 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         hint: "nhìn nhanh",
         index: "01",
         icon: LayoutDashboard,
-        accent: "from-sky-400 to-cyan-500",
-        activeGlow: "shadow-[0_0_20px_rgba(56,189,248,0.22)]",
+        accent: "from-[#6c5ce7] to-[#a78bfa]",
+        activeGlow: softGlow,
       },
     ],
   },
@@ -43,8 +45,8 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         hint: "upload buổi học",
         index: "02",
         icon: MonitorPlay,
-        accent: "from-violet-400 to-fuchsia-500",
-        activeGlow: "shadow-[0_0_20px_rgba(139,92,246,0.25)]",
+        accent: "from-[#6c5ce7] to-[#00d97e]",
+        activeGlow: softGlow,
       },
       {
         key: "questionBank",
@@ -52,17 +54,17 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         hint: "ngân hàng câu hỏi",
         index: "03",
         icon: LibraryBig,
-        accent: "from-amber-400 to-orange-500",
-        activeGlow: "shadow-[0_0_20px_rgba(251,191,36,0.22)]",
+        accent: "from-[#fbbf24] to-[#6c5ce7]",
+        activeGlow: softGlow,
       },
       {
         key: "feedback",
-        label: "Feedback học viên",
+        label: "Feedback từ học viên",
         hint: "theo từng lớp",
         index: "04",
         icon: MessageSquareHeart,
-        accent: "from-rose-400 to-orange-400",
-        activeGlow: "shadow-[0_0_20px_rgba(251,113,133,0.22)]",
+        accent: "from-[#f472b6] to-[#6c5ce7]",
+        activeGlow: softGlow,
       },
     ],
   },
@@ -76,8 +78,8 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         hint: "cập nhật hồ sơ",
         index: "05",
         icon: UserRound,
-        accent: "from-fuchsia-400 to-pink-500",
-        activeGlow: "shadow-[0_0_20px_rgba(232,121,249,0.22)]",
+        accent: "from-[#6c5ce7] to-[#c4b5fd]",
+        activeGlow: softGlow,
       },
       {
         key: "password",
@@ -85,8 +87,8 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         hint: "bảo mật tài khoản",
         index: "06",
         icon: KeyRound,
-        accent: "from-emerald-400 to-teal-500",
-        activeGlow: "shadow-[0_0_20px_rgba(52,211,153,0.22)]",
+        accent: "from-[#00d97e] to-[#6c5ce7]",
+        activeGlow: softGlow,
       },
     ],
   },
@@ -103,11 +105,16 @@ export const teacherMenuLabels: Record<TeacherMenuKey, string> = {
 
 export const teacherSidebarBranding = {
   title: "Course Teacher",
-  tagline: "Không gian giảng dạy",  
+  tagline: "Không gian giảng dạy",
   icon: GraduationCap,
-  iconColor: "text-sky-400",
+  theme: "light" as const,
+  variant: "rail" as const,
+  iconColor: "text-[#6c5ce7]",
+  iconActive: "text-[#6c5ce7]",
+  sidebarBg: "bg-white",
+  footerBg: "bg-[#f7f5fb]",
   radialGradient:
-    "bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(56,189,248,0.14),transparent_60%)]",
-  lineAccent: "from-sky-500/40",
-  chevronActive: "text-sky-300/90",
+    "bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(108,92,231,0.08),transparent_60%)]",
+  lineAccent: "from-[#6c5ce7]/40",
+  chevronActive: "text-[#6c5ce7]",
 };

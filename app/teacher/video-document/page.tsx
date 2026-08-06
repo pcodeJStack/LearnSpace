@@ -947,8 +947,8 @@ function VideoDocumentManagementContent() {
   };
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-slate-200/70 bg-white px-5 py-3">
+    <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
+      <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200/70 bg-white px-5 py-3">
         <Select
           value={effectiveCourseId ?? ""}
           onValueChange={(val) => {
@@ -978,11 +978,7 @@ function VideoDocumentManagementContent() {
             side="bottom"
             align="start"
             sideOffset={6}
-            className="4 
-      rounded-xl
-      border-slate-200
-      shadow-lg
-    "
+            className="rounded-xl border-slate-200 shadow-lg"
           >
             {classrooms.map((classroom) => (
               <SelectItem
@@ -1001,7 +997,7 @@ function VideoDocumentManagementContent() {
         </div>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-0 lg:grid-cols-[311px_minmax(0,1fr)]">
+      <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
         <section className="min-h-0 overflow-y-auto border-r border-slate-200 bg-slate-50/30 px-3 py-4 sm:px-4">
           <LessonModuleSidebar
             modules={sidebarModules}
@@ -1018,19 +1014,21 @@ function VideoDocumentManagementContent() {
           />
         </section>
 
-        <main className="min-w-0 bg-white">
-          <LessonContentTabBar
-            activeTab={activeTab}
-            materialsCount={lessonResources.length}
-            quizzesCount={lessonQuizzes.length}
-            onChange={(tab) => {
-              setActiveTab(tab);
-              if (tab === "preview") setVideoType("PREVIEW");
-              if (tab === "replay") setVideoType("AFTER_LESSON");
-            }}
-          />
+        <main className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white">
+          <div className="shrink-0 overflow-x-auto">
+            <LessonContentTabBar
+              activeTab={activeTab}
+              materialsCount={lessonResources.length}
+              quizzesCount={lessonQuizzes.length}
+              onChange={(tab) => {
+                setActiveTab(tab);
+                if (tab === "preview") setVideoType("PREVIEW");
+                if (tab === "replay") setVideoType("AFTER_LESSON");
+              }}
+            />
+          </div>
 
-          <div className="bg-slate-50/50 p-4">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/50 p-4">
             {activeTab === "materials" ? (
               <LessonMaterialsPanel
                 snapLessonId={activeSession.session.id}

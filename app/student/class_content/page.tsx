@@ -317,8 +317,8 @@ const ClassContentManagement = () => {
   }
 
   return (
-    <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-slate-200/70 bg-white px-5 py-3">
+    <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
+      <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200/70 bg-white px-5 py-3">
         <Select
           value={effectiveCourseId ?? ""}
           onValueChange={(val) => {
@@ -353,7 +353,7 @@ const ClassContentManagement = () => {
         </div>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-0 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
         <section className="min-h-0 overflow-y-auto border-r border-slate-200/80 bg-slate-50/30 px-3 py-4 sm:px-4">
           <LessonModuleSidebar
             modules={sidebarModules}
@@ -375,15 +375,17 @@ const ClassContentManagement = () => {
           />
         </section>
 
-        <main className="min-h-0 min-w-0 overflow-y-auto bg-white">
-          <LessonContentTabBar
-            activeTab={activeTab}
-            materialsCount={lessonResources.length}
-            quizzesCount={lessonQuizzes.length}
-            onChange={setActiveTab}
-          />
+        <main className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white">
+          <div className="shrink-0 overflow-x-auto">
+            <LessonContentTabBar
+              activeTab={activeTab}
+              materialsCount={lessonResources.length}
+              quizzesCount={lessonQuizzes.length}
+              onChange={setActiveTab}
+            />
+          </div>
 
-          <div className="bg-slate-50/50 p-4 sm:p-5">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/50 p-4 sm:p-5">
             {activeTab === "materials" ? (
               <LessonMaterialsList
                 snapLessonId={activeSession.session.id}

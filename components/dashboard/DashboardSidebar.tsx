@@ -24,6 +24,12 @@ export type DashboardSidebarBranding = {
   tagline: string;
   icon: LucideIcon;
   iconColor: string;
+  iconActive?: string;
+  theme?: "dark" | "light";
+  /** Icon-only rail with hover labels (soft UI). Default: full for dark, rail for light. */
+  variant?: "full" | "rail";
+  sidebarBg?: string;
+  footerBg?: string;
   radialGradient: string;
   lineAccent: string;
   chevronActive: string;
@@ -38,6 +44,17 @@ type DashboardSidebarProps<T extends string> = {
   branding: DashboardSidebarBranding;
 };
 
+function RailTooltip({ label }: { label: string }) {
+  return (
+    <span
+      className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-xl border border-[#ebe7ff] bg-white px-3 py-1.5 text-xs font-semibold text-[#6c5ce7] opacity-0 shadow-[0_10px_28px_rgba(108,92,231,0.16)] transition duration-200 [visibility:hidden] group-hover:visible group-hover:opacity-100"
+      role="tooltip"
+    >
+      {label}
+    </span>
+  );
+}
+
 export function DashboardSidebar<T extends string>({
   groups,
   activeMenu,
@@ -47,9 +64,76 @@ export function DashboardSidebar<T extends string>({
   branding,
 }: DashboardSidebarProps<T>) {
   const BrandIcon = branding.icon;
+  const isLight = branding.theme === "light";
+  const isRail =
+    branding.variant === "rail" ||
+    (branding.variant !== "full" && isLight);
+
+  if (isRail) {
+    const flatItems = groups.flatMap((group) => group.items);
+    const sidebarBg = branding.sidebarBg || "bg-white";
+
+    return (
+      <aside
+        className={`relative z-30 hidden h-full w-[88px] shrink-0 flex-col items-center overflow-visible border-r border-[#ebe7ff] py-5 lg:flex ${sidebarBg}`}
+      >
+        <div
+          className={`pointer-events-none absolute inset-0 ${branding.radialGradient}`}
+        />
+
+        <div className="relative mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-[#6c5ce7] to-[#a78bfa] shadow-[0_10px_24px_rgba(108,92,231,0.28)]">
+          <BrandIcon className="h-5 w-5 text-white" />
+        </div>
+
+        <nav className="relative flex min-h-0 w-full flex-1 flex-col items-center gap-2 overflow-visible px-2">
+          {flatItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeMenu === item.key;
+
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => onMenuChange(item.key)}
+                aria-label={item.label}
+                className={`group relative z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl transition duration-200 hover:z-20 ${
+                  isActive
+                    ? "bg-[#6c5ce7] text-white shadow-[0_10px_22px_rgba(108,92,231,0.35)]"
+                    : "bg-[#6c5ce7]/10 text-[#6c5ce7] hover:bg-[#6c5ce7]/18"
+                }`}
+              >
+                <Icon className="h-5 w-5" strokeWidth={isActive ? 2.2 : 2} />
+                <RailTooltip label={item.label} />
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="relative z-10 mt-auto flex flex-col items-center gap-2 overflow-visible px-2 pt-4">
+          <button
+            type="button"
+            onClick={onLogout}
+            disabled={isLogoutPending}
+            aria-label={isLogoutPending ? "Đang đăng xuất..." : "Đăng xuất"}
+            className="group relative z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-slate-100 text-slate-500 transition hover:z-20 hover:bg-rose-50 hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <LogOut className="h-5 w-5" />
+            <RailTooltip
+              label={isLogoutPending ? "Đang đăng xuất..." : "Đăng xuất"}
+            />
+          </button>
+        </div>
+      </aside>
+    );
+  }
+
+  const sidebarBg = branding.sidebarBg || "bg-[#020f27]";
+  const footerBg = branding.footerBg || "bg-[#0c1e3a]";
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[300px] shrink-0 flex-col overflow-hidden border-r border-white/[0.08] bg-[#020f27] shadow-[4px_0_24px_rgba(0,0,0,0.12)] lg:flex">
+    <aside
+      className={`relative hidden h-full w-[300px] shrink-0 flex-col overflow-hidden border-r border-white/[0.08] shadow-[4px_0_24px_rgba(0,0,0,0.12)] lg:flex ${sidebarBg}`}
+    >
       <div
         className={`pointer-events-none absolute inset-0 ${branding.radialGradient}`}
       />
@@ -115,7 +199,7 @@ export function DashboardSidebar<T extends string>({
                     <Icon
                       className={`h-[18px] w-[18px] shrink-0 transition-colors duration-300 ${
                         isActive
-                          ? "text-sky-300"
+                          ? branding.iconActive || "text-sky-300"
                           : "text-slate-400 group-hover:text-slate-200"
                       }`}
                     />
@@ -146,7 +230,9 @@ export function DashboardSidebar<T extends string>({
         ))}
       </nav>
 
-      <div className="relative mt-auto shrink-0 border-t border-white/[0.08] bg-[#0c1e3a] p-4">
+      <div
+        className={`relative mt-auto shrink-0 border-t border-white/[0.08] p-4 ${footerBg}`}
+      >
         <button
           type="button"
           onClick={onLogout}
