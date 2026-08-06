@@ -81,7 +81,7 @@ function GradeTabBar({
         className={cn(
           "cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition",
           activeTab === "pending"
-            ? "bg-blue-900 text-white"
+            ? "bg-[rgba(108,92,231,0.1)] text-[#6c5ce7]"
             : "text-slate-600 hover:bg-slate-100",
         )}
       >
@@ -91,7 +91,7 @@ function GradeTabBar({
             className={cn(
               "ml-1.5 rounded-md px-1.5 py-0.5 text-xs",
               activeTab === "pending"
-                ? "bg-white/15 text-white"
+                ? "bg-[#6c5ce7]/15 text-[#6c5ce7]"
                 : "bg-amber-100 text-amber-700",
             )}
           >
@@ -105,7 +105,7 @@ function GradeTabBar({
         className={cn(
           "cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition",
           activeTab === "graded"
-            ? "bg-blue-900 text-white"
+            ? "bg-[rgba(108,92,231,0.1)] text-[#6c5ce7]"
             : "text-slate-600 hover:bg-slate-100",
         )}
       >
@@ -115,7 +115,7 @@ function GradeTabBar({
             className={cn(
               "ml-1.5 rounded-md px-1.5 py-0.5 text-xs",
               activeTab === "graded"
-                ? "bg-white/15 text-white"
+                ? "bg-[#6c5ce7]/15 text-[#6c5ce7]"
                 : "bg-emerald-100 text-emerald-700",
             )}
           >
@@ -152,18 +152,18 @@ function PendingStudentListSidebar({
                 type="button"
                 onClick={() => onChange(submission.submissionId)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-left transition-all",
+                  "flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition-all",
                   isActive
-                    ? "bg-blue-900 text-white shadow-sm"
-                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-slate-300",
+                    ? "bg-[rgba(108,92,231,0.08)] text-slate-900 ring-1 ring-[rgba(108,92,231,0.22)] shadow-sm"
+                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-[#d5ceff]",
                 )}
               >
                 <span
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
                     isActive
-                      ? "bg-white/15 text-white"
-                      : "bg-blue-50 text-blue-900",
+                      ? "bg-[#6c5ce7] text-white"
+                      : "bg-[#ebe7ff] text-[#6c5ce7]",
                   )}
                 >
                   <UserRound className="h-4 w-4" />
@@ -172,7 +172,7 @@ function PendingStudentListSidebar({
                   <span
                     className={cn(
                       "block truncate text-sm font-semibold",
-                      isActive ? "text-white" : "text-slate-900",
+                      isActive ? "text-slate-900" : "text-slate-900",
                     )}
                   >
                     {submission.studentName}
@@ -180,7 +180,7 @@ function PendingStudentListSidebar({
                   <span
                     className={cn(
                       "mt-0.5 block text-[11px]",
-                      isActive ? "text-blue-100" : "text-slate-400",
+                      isActive ? "text-slate-500" : "text-slate-400",
                     )}
                   >
                     {submission.answers.length} câu trả lời
@@ -220,41 +220,30 @@ function GradedStudentListSidebar({
                 type="button"
                 onClick={() => onChange(submission.submissionId)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-left transition-all",
+                  "flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition-all",
                   isActive
-                    ? "bg-blue-900 text-white shadow-sm"
-                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-slate-300",
+                    ? "bg-[rgba(108,92,231,0.08)] text-slate-900 ring-1 ring-[rgba(108,92,231,0.22)] shadow-sm"
+                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-[#d5ceff]",
                 )}
               >
                 <span
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
                     isActive
-                      ? "bg-white/15 text-white"
-                      : "bg-blue-50 text-blue-900",
+                      ? "bg-[#6c5ce7] text-white"
+                      : "bg-[#ebe7ff] text-[#6c5ce7]",
                   )}
                 >
                   <UserRound className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span
-                    className={cn(
-                      "block truncate text-sm font-semibold",
-                      isActive ? "text-white" : "text-slate-900",
-                    )}
-                  >
+                  <span className="block truncate text-sm font-semibold text-slate-900">
                     {submission.studentName}
                   </span>
                   <span
                     className={cn(
                       "mt-0.5 block text-[11px] font-medium",
-                      isActive
-                        ? submission.passed
-                          ? "text-emerald-200"
-                          : "text-amber-200"
-                        : submission.passed
-                          ? "text-emerald-600"
-                          : "text-amber-600",
+                      submission.passed ? "text-emerald-600" : "text-amber-600",
                     )}
                   >
                     {getGradedSubmissionScore(submission)}đ ·{" "}
@@ -339,7 +328,7 @@ function SubmissionGradePanel({
         </p>
         <p className="mt-0.5 text-xs text-slate-500">
           {submission.answers.length} câu · Tổng điểm tạm tính:{" "}
-          <span className="font-medium text-blue-900">{totalPoints}</span>
+          <span className="font-medium text-[#6c5ce7]">{totalPoints}</span>
         </p>
       </div>
 
@@ -702,7 +691,7 @@ export function LessonQuizGradeModal({
       <DialogContent className={MODAL_CLASS}>
         <div className="shrink-0 px-6 pt-6 pb-2">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-900">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ebe7ff] text-[#6c5ce7]">
               <ClipboardCheck className="h-[18px] w-[18px]" />
             </div>
             <div className="min-w-0 flex-1">

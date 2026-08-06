@@ -52,24 +52,24 @@ const isEssayQuiz = (questions: QuizSubmissionResult["questions"]) =>
 
 const getQuestionStatusDotClass = (
   question: QuizSubmissionResult["questions"][number],
-  isActive: boolean,
+  _isActive: boolean,
   isPending: boolean,
   hasAnswer: boolean,
 ) => {
   if (isPending) {
     if (!hasAnswer) return "bg-slate-300";
-    return isActive ? "bg-blue-200" : "bg-blue-500";
+    return "bg-[#6c5ce7]";
   }
 
   const earned = getQuestionEarnedPoints(question);
   const maxPoints = question.points;
 
   if (earned >= maxPoints) {
-    return isActive ? "bg-emerald-300" : "bg-emerald-500";
+    return "bg-emerald-500";
   }
 
   if (earned > 0) {
-    return isActive ? "bg-amber-300" : "bg-amber-500";
+    return "bg-amber-500";
   }
 
   return isActive ? "bg-rose-300" : "bg-rose-400";
@@ -146,10 +146,10 @@ function AttemptPickerSidebar({
               type="button"
               onClick={() => onChange(index)}
               className={cn(
-                "w-full cursor-pointer rounded-lg px-3 py-2 text-left text-xs transition ring-1",
+                "w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-xs transition ring-1",
                 isActive
-                  ? "bg-blue-900 text-white ring-blue-900 shadow-sm"
-                  : "bg-white text-slate-700 ring-slate-200 hover:ring-slate-300",
+                  ? "bg-[rgba(108,92,231,0.08)] text-slate-900 ring-[rgba(108,92,231,0.22)] shadow-sm"
+                  : "bg-white text-slate-700 ring-slate-200 hover:ring-[#d5ceff]",
               )}
             >
               <span className="font-semibold">Lần {attempt.attemptNo}</span>
@@ -157,7 +157,7 @@ function AttemptPickerSidebar({
                 <span
                   className={cn(
                     "mt-0.5 block truncate",
-                    isActive ? "text-blue-100" : "text-slate-400",
+                    isActive ? "text-slate-500" : "text-slate-400",
                   )}
                 >
                   {submittedLabel}
@@ -167,13 +167,7 @@ function AttemptPickerSidebar({
                 <span
                   className={cn(
                     "mt-1 block font-medium",
-                    isActive
-                      ? attempt.passed
-                        ? "text-emerald-200"
-                        : "text-amber-200"
-                      : attempt.passed
-                        ? "text-emerald-600"
-                        : "text-amber-600",
+                    attempt.passed ? "text-emerald-600" : "text-amber-600",
                   )}
                 >
                   {attempt.score}đ · {attempt.passed ? "Đạt" : "Chưa đạt"}
@@ -182,7 +176,7 @@ function AttemptPickerSidebar({
                 <span
                   className={cn(
                     "mt-1 block",
-                    isActive ? "text-blue-100" : "text-amber-600",
+                    isActive ? "text-[#6c5ce7]" : "text-amber-600",
                   )}
                 >
                   Chờ chấm
@@ -226,7 +220,7 @@ function AttemptPickerSidebar({
 //               className={cn(
 //                 "shrink-0 cursor-pointer rounded-lg px-3 py-2 text-left text-xs transition ring-1",
 //                 isActive
-//                   ? "bg-blue-900 text-white ring-blue-900 shadow-sm"
+//                   ? "bg-[#6c5ce7] text-white ring-[#6c5ce7] shadow-sm"
 //                   : "bg-white text-slate-700 ring-slate-200 hover:ring-slate-300",
 //               )}
 //             >
@@ -235,7 +229,7 @@ function AttemptPickerSidebar({
 //                 <span
 //                   className={cn(
 //                     "mt-0.5 block whitespace-nowrap",
-//                     isActive ? "text-blue-100" : "text-slate-400",
+//                     isActive ? "text-white/90" : "text-slate-400",
 //                   )}
 //                 >
 //                   {submittedLabel}
@@ -280,10 +274,10 @@ function QuestionListSidebar({
                 type="button"
                 onClick={() => onChange(index)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-left transition-all",
+                  "flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition-all",
                   isActive
-                    ? "bg-blue-900 text-white shadow-sm"
-                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-slate-300",
+                    ? "bg-[rgba(108,92,231,0.08)] text-slate-900 ring-1 ring-[rgba(108,92,231,0.22)] shadow-sm"
+                    : "bg-white text-slate-700 ring-1 ring-slate-200/80 hover:ring-[#d5ceff]",
                 )}
               >
                 <span
@@ -298,34 +292,18 @@ function QuestionListSidebar({
                         )
                       : isPending
                         ? hasAnswer
-                          ? isActive
-                            ? "bg-blue-200"
-                            : "bg-blue-500"
+                          ? "bg-[#6c5ce7]"
                           : "bg-slate-300"
                         : question.correct
-                          ? isActive
-                            ? "bg-emerald-300"
-                            : "bg-emerald-500"
-                          : isActive
-                            ? "bg-rose-300"
-                            : "bg-rose-400",
+                          ? "bg-emerald-500"
+                          : "bg-rose-400",
                   )}
                 />
                 <span className="min-w-0 flex-1">
-                  <span
-                    className={cn(
-                      "block text-xs font-semibold",
-                      isActive ? "text-white" : "text-slate-900",
-                    )}
-                  >
+                  <span className="block text-xs font-semibold text-slate-900">
                     Câu {index + 1}
                   </span>
-                  <span
-                    className={cn(
-                      "mt-0.5 block line-clamp-2 text-[11px] leading-snug",
-                      isActive ? "text-blue-100" : "text-slate-400",
-                    )}
-                  >
+                  <span className="mt-0.5 block line-clamp-2 text-[11px] leading-snug text-slate-500">
                     {question.questionContent}
                   </span>
                 </span>
@@ -638,14 +616,14 @@ function OptionItem({
       <div
         className={cn(
           "flex items-start gap-3 rounded-xl px-1 py-2 transition-colors",
-          isSelected && "bg-blue-50/60",
+          isSelected && "bg-[rgba(108,92,231,0.06)]",
         )}
       >
         <span
           className={cn(
             "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 text-[9px] font-semibold",
             isSelected
-              ? "border-blue-900 bg-blue-900 text-white"
+              ? "border-[#6c5ce7] bg-[#6c5ce7] text-white"
               : "border-slate-200 bg-white text-slate-400",
           )}
         >
@@ -654,7 +632,7 @@ function OptionItem({
         <div className="min-w-0 flex-1 pt-px">
           <p className="text-sm leading-relaxed text-slate-700">{content}</p>
           {isSelected ? (
-            <p className="mt-1 text-xs text-blue-800">Bạn đã chọn</p>
+            <p className="mt-1 text-xs text-[#6c5ce7]">Bạn đã chọn</p>
           ) : null}
         </div>
       </div>
@@ -732,7 +710,7 @@ function QuestionDetail({
             Chờ chấm
           </span>
         ) : essayQuestion ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ebe7ff] px-2.5 py-1 text-xs font-medium text-[#6c5ce7]">
             Đã chấm
             <span className="text-slate-300">·</span>
             {formatQuestionScoreLabel(question)}
@@ -830,7 +808,7 @@ export function LessonQuizResultModal({
       <DialogContent className={MODAL_CLASS}>
         <div className="shrink-0 px-6 pt-6 pb-4">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-900">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ebe7ff] text-[#6c5ce7]">
               <ClipboardList className="h-[18px] w-[18px]" />
             </div>
             <div className="min-w-0 flex-1">

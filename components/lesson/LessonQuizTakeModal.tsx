@@ -349,7 +349,7 @@ export function LessonQuizTakeModal({
         <div className="shrink-0 border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50/80 px-4 py-4 sm:px-6 sm:py-5">
           <div className="flex items-start justify-between gap-3 sm:gap-4">
             <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-900 text-white shadow-sm sm:h-11 sm:w-11 sm:rounded-2xl">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#6c5ce7] text-white shadow-sm sm:h-11 sm:w-11 sm:rounded-2xl">
                 <ClipboardList className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1 pr-6 sm:pr-0">
@@ -383,7 +383,7 @@ export function LessonQuizTakeModal({
                   <Clock className={cn("h-4 w-4", isUrgent && "animate-pulse")} />
                   {formatTime(secondsLeft)}
                 </div>
-                <span className="hidden rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-900 ring-1 ring-blue-100 md:inline">
+                <span className="hidden rounded-full bg-[#ebe7ff] px-2.5 py-1 text-xs font-semibold text-[#6c5ce7] ring-1 ring-[#ebe7ff] md:inline">
                   {answeredCount}/{quiz.questions.length} câu
                 </span>
               </div>
@@ -398,7 +398,7 @@ export function LessonQuizTakeModal({
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-slate-200/80">
                 <div
-                  className="h-full rounded-full bg-blue-900 transition-all duration-300"
+                  className="h-full rounded-full bg-[#6c5ce7] transition-all duration-300"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -590,7 +590,7 @@ export function LessonQuizTakeModal({
               <div className="min-w-0 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-900 text-sm font-bold text-white shadow-sm">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6c5ce7] text-sm font-bold text-white shadow-sm">
                       {activeQuestionIndex + 1}
                     </span>
                     <div>
@@ -627,7 +627,7 @@ export function LessonQuizTakeModal({
                   <div className="px-5 py-5 sm:px-6">
                     {quiz.quizType === "ESSAY" ? (
                       <Textarea
-                        className="min-h-[180px] resize-y rounded-xl border-slate-200 bg-slate-50/30 text-sm leading-relaxed focus-visible:ring-blue-900/20 sm:min-h-[220px]"
+                        className="min-h-[180px] resize-y rounded-xl border-slate-200 bg-slate-50/30 text-sm leading-relaxed focus-visible:ring-[#6c5ce7]/20 sm:min-h-[220px]"
                         placeholder="Viết câu trả lời của bạn..."
                         value={answers[activeQuestion.questionId] ?? ""}
                         onChange={(e) =>
@@ -657,15 +657,15 @@ export function LessonQuizTakeModal({
                               className={cn(
                                 "flex w-full cursor-pointer items-start gap-3 rounded-xl border px-4 py-4 text-left text-sm transition-all",
                                 isSelected
-                                  ? "border-blue-900 bg-blue-50 shadow-md ring-1 ring-blue-900/10"
-                                  : "border-slate-200 bg-white hover:border-blue-200 hover:bg-blue-50/40",
+                                  ? "border-[#6c5ce7] bg-[#ebe7ff] shadow-md ring-1 ring-[#6c5ce7]/10"
+                                  : "border-slate-200 bg-white hover:border-[#d5ceff] hover:bg-[#ebe7ff]/40",
                               )}
                             >
                               <span
                                 className={cn(
                                   "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold",
                                   isSelected
-                                    ? "bg-blue-900 text-white"
+                                    ? "bg-[#6c5ce7] text-white"
                                     : "bg-slate-100 text-slate-600",
                                 )}
                               >
@@ -712,7 +712,7 @@ export function LessonQuizTakeModal({
                         className={cn(
                           "relative flex h-10 cursor-pointer items-center justify-center rounded-lg border text-xs font-semibold transition-colors",
                           isActive
-                            ? "border-blue-900 bg-blue-900 text-white shadow-sm"
+                            ? "border-[#6c5ce7] bg-[#6c5ce7] text-white shadow-sm"
                             : isAnswered
                               ? "border-emerald-300 bg-emerald-50 text-emerald-800 hover:border-emerald-400"
                               : "border-dashed border-slate-300 bg-white text-slate-400 hover:border-slate-400 hover:bg-slate-50",
