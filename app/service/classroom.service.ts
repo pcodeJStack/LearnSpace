@@ -122,6 +122,7 @@ export type Class = {
   id: string;
   name: string;
   description: string;
+  teacherId: string | null;
   teacherName: string;
   startDate: string;
   endDate: string;

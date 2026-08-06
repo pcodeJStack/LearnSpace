@@ -13,6 +13,11 @@ export const STUDENT_API = {
   SUBMIT_QUIZ: (quizId: string) => `/student/quizzes/${quizId}/submit`,
   GET_QUIZ_RESULT: (quizId: string) => `/student/quizzes/${quizId}/result`,
 };
+
+export const FEEDBACK_API = {
+  CREATE_TEACHER_FEEDBACK: "/feedback-teacher",
+  GET_BY_CLASSROOM: (classroomId: string) => `/classroom/${classroomId}`,
+};
 export const CLASS_API = {
   CREATE_CLASS: "/class",
   GET_CLASSES: "/classes",

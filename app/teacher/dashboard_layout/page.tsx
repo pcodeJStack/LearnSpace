@@ -6,6 +6,7 @@ import {
   ArrowRight,
   BookOpen,
   GraduationCap,
+  MessageSquareHeart,
   MonitorPlay,
   Sparkles,
   Upload,
@@ -20,6 +21,7 @@ import VideoDocumentManagement from "../video-document/page";
 import TeacherProfilePage from "../profile/page";
 import TeacherChangePasswordPage from "../change-password/page";
 import TeacherQuestionBankPage from "../question-bank/page";
+import TeacherClassroomFeedbackPage from "../classroom_feedback/page";
 import {
   teacherMenuGroups,
   teacherMenuLabels,
@@ -245,6 +247,7 @@ const TeacherDashboardContent = () => {
                           "Tải bản ghi buổi học và xem lại video đã lưu.",
                         icon: Video,
                         lineColor: "bg-sky-400",
+                        menu: "content" as const,
                       },
                       {
                         title: "Tài liệu buổi học",
@@ -252,6 +255,15 @@ const TeacherDashboardContent = () => {
                           "Thêm file hoặc liên kết tài liệu cho từng buổi.",
                         icon: BookOpen,
                         lineColor: "bg-amber-400",
+                        menu: "content" as const,
+                      },
+                      {
+                        title: "Feedback học viên",
+                        description:
+                          "Xem rating và nhận xét theo từng lớp phụ trách.",
+                        icon: MessageSquareHeart,
+                        lineColor: "bg-rose-400",
+                        menu: "feedback" as const,
                       },
                       {
                         title: "Quản lý theo lớp",
@@ -259,6 +271,7 @@ const TeacherDashboardContent = () => {
                           "Chọn lớp, chủ đề và buổi học từ một giao diện.",
                         icon: Upload,
                         lineColor: "bg-violet-400",
+                        menu: "content" as const,
                       },
                     ].map((action) => {
                       const Icon = action.icon;
@@ -266,7 +279,7 @@ const TeacherDashboardContent = () => {
                         <button
                           key={action.title}
                           type="button"
-                          onClick={() => handleMenuChange("content")}
+                          onClick={() => handleMenuChange(action.menu)}
                           className="group flex w-full cursor-pointer items-center gap-4 py-5 text-left transition hover:bg-slate-50/80 sm:gap-5"
                         >
                           <div
@@ -302,6 +315,12 @@ const TeacherDashboardContent = () => {
           {activeMenu === "questionBank" && (
             <div className="relative h-full min-h-0">
               <TeacherQuestionBankPage />
+            </div>
+          )}
+
+          {activeMenu === "feedback" && (
+            <div className="relative h-full min-h-0">
+              <TeacherClassroomFeedbackPage />
             </div>
           )}
 

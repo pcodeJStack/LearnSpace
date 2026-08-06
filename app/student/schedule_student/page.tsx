@@ -29,15 +29,39 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const GRID_START_HOUR = 18;
-const GRID_END_HOUR_NEXT_DAY = 3;
-const SLOT_MINUTES = 30;
-const SLOT_HEIGHT = 28;
+type ScheduleBandConfig = {
+  id: "day" | "evening";
+  label: string;
+  subtitle: string;
+  startHour: number;
+  endHour: number;
+  crossesMidnight: boolean;
+  slotMinutes: number;
+  slotHeight: number;
+};
 
-const getGridStartMinutes = () => GRID_START_HOUR * 60;
-const getGridEndMinutes = () => (GRID_END_HOUR_NEXT_DAY + 24) * 60;
-const getGridSpanMinutes = () => getGridEndMinutes() - getGridStartMinutes();
-const getGridSlotCount = () => getGridSpanMinutes() / SLOT_MINUTES;
+const SCHEDULE_BANDS: ScheduleBandConfig[] = [
+  {
+    id: "day",
+    label: "Ban ngày",
+    subtitle: "06:00 – 18:00",
+    startHour: 6,
+    endHour: 18,
+    crossesMidnight: false,
+    slotMinutes: 60,
+    slotHeight: 22,
+  },
+  {
+    id: "evening",
+    label: "Ban tối",
+    subtitle: "18:00 – 03:00",
+    startHour: 18,
+    endHour: 3,
+    crossesMidnight: true,
+    slotMinutes: 30,
+    slotHeight: 24,
+  },
+];
 
 const weekDays = [
   { value: "MONDAY", label: "Thứ 2", short: "T2" },
@@ -83,70 +107,220 @@ const formatTime = (value?: string) => {
   return value.slice(0, 5);
 };
 
-const timeToGridMinutes = (value?: string) => {
-  if (!value) return getGridStartMinutes();
+const getBandStartMinutes = (band: ScheduleBandConfig) => band.startHour * 60;
+
+const getBandEndMinutes = (band: ScheduleBandConfig) => {
+  if (band.crossesMidnight) {
+    return (band.endHour + 24) * 60;
+  }
+  return band.endHour * 60;
+};
+
+const getBandSpanMinutes = (band: ScheduleBandConfig) =>
+  getBandEndMinutes(band) - getBandStartMinutes(band);
+
+const getBandSlotCount = (band: ScheduleBandConfig) =>
+  getBandSpanMinutes(band) / band.slotMinutes;
+
+const getBandHeight = (band: ScheduleBandConfig) =>
+  getBandSlotCount(band) * band.slotHeight;
+
+const timeToBandMinutes = (
+  value: string | undefined,
+  band: ScheduleBandConfig,
+) => {
+  if (!value) return getBandStartMinutes(band);
   const [hours, minutes] = value.split(":").map(Number);
   let total = hours * 60 + (minutes || 0);
 
-  if (hours < GRID_START_HOUR) {
+  if (band.crossesMidnight && hours < band.startHour) {
     total += 24 * 60;
   }
 
   return total;
 };
 
-const isScheduleInGridRange = (schedule: ClassScheduleItem) => {
-  const gridStart = getGridStartMinutes();
-  const gridEnd = getGridEndMinutes();
-  const start = timeToGridMinutes(schedule.startTime);
-  const end = timeToGridMinutes(schedule.endTime);
+const isScheduleInBand = (
+  schedule: ClassScheduleItem,
+  band: ScheduleBandConfig,
+) => {
+  const bandStart = getBandStartMinutes(band);
+  const bandEnd = getBandEndMinutes(band);
+  const start = timeToBandMinutes(schedule.startTime, band);
+  const end = timeToBandMinutes(schedule.endTime, band);
 
-  return end > gridStart && start < gridEnd;
+  return end > bandStart && start < bandEnd;
 };
 
-const getBlockStyle = (schedule: ClassScheduleItem) => {
-  const gridStart = getGridStartMinutes();
-  const gridEnd = getGridEndMinutes();
-  const start = Math.max(timeToGridMinutes(schedule.startTime), gridStart);
-  const end = Math.min(timeToGridMinutes(schedule.endTime), gridEnd);
-  const top = ((start - gridStart) / SLOT_MINUTES) * SLOT_HEIGHT;
-  const height = Math.max(((end - start) / SLOT_MINUTES) * SLOT_HEIGHT, SLOT_HEIGHT);
+const getBlockStyleInBand = (
+  schedule: ClassScheduleItem,
+  band: ScheduleBandConfig,
+) => {
+  const bandStart = getBandStartMinutes(band);
+  const bandEnd = getBandEndMinutes(band);
+  const start = Math.max(timeToBandMinutes(schedule.startTime, band), bandStart);
+  const end = Math.min(timeToBandMinutes(schedule.endTime, band), bandEnd);
+  const top = ((start - bandStart) / band.slotMinutes) * band.slotHeight;
+  const height = Math.max(
+    ((end - start) / band.slotMinutes) * band.slotHeight,
+    band.slotHeight,
+  );
+
   return { top, height };
 };
 
-const timeLabels = Array.from(
-  { length: getGridSpanMinutes() / 60 + 1 },
-  (_, index) => {
-    const hour = (GRID_START_HOUR + index) % 24;
+const getBandTimeLabels = (band: ScheduleBandConfig) =>
+  Array.from({ length: getBandSpanMinutes(band) / 60 + 1 }, (_, index) => {
+    const hour = (band.startHour + index) % 24;
     return `${hour.toString().padStart(2, "0")}:00`;
-  },
-);
+  });
+
+const getMidnightRowIndex = (band: ScheduleBandConfig) => {
+  if (!band.crossesMidnight) return -1;
+  return ((24 - band.startHour) * 60) / band.slotMinutes;
+};
 
 function ScheduleBlock({
   schedule,
+  band,
   className,
 }: {
   schedule: ClassScheduleItem;
+  band: ScheduleBandConfig;
   className?: string;
 }) {
-  const { top, height } = getBlockStyle(schedule);
+  const { top, height } = getBlockStyleInBand(schedule, band);
   const isOnline = (schedule.studyMode ?? "").toUpperCase() === "ONLINE";
 
   return (
     <div
-      className={`absolute inset-x-1.5 overflow-hidden rounded-md border border-l-[3px] px-2 py-1 text-[11px] leading-tight shadow-sm transition hover:z-10 hover:scale-[1.02] hover:shadow-md ${getStudyModeBlockStyles(schedule.studyMode)}`}
+      className={`absolute inset-x-1 overflow-hidden rounded-md border border-l-[3px] px-1.5 py-0.5 text-[10px] leading-tight shadow-sm transition hover:z-10 hover:scale-[1.02] hover:shadow-md sm:inset-x-1.5 sm:px-2 sm:py-1 sm:text-[11px] ${getStudyModeBlockStyles(schedule.studyMode)}`}
       style={{ top, height }}
       title={`${className ?? "Buổi học"} (${formatTime(schedule.startTime)} - ${formatTime(schedule.endTime)})`}
     >
       <p className="truncate font-semibold">{className ?? "Buổi học"}</p>
-      <p className="truncate text-[10px] opacity-80">
+      <p className="truncate text-[9px] opacity-80 sm:text-[10px]">
         {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
       </p>
       <p
-        className={`mt-0.5 inline-flex truncate rounded px-1 py-0.5 text-[9px] font-semibold uppercase ${getStudyModeBadgeStyles(schedule.studyMode)}`}
+        className={`mt-0.5 hidden truncate rounded px-1 py-0.5 text-[9px] font-semibold uppercase sm:inline-flex ${getStudyModeBadgeStyles(schedule.studyMode)}`}
       >
         {isOnline ? "Online" : "Offline"}
       </p>
+    </div>
+  );
+}
+
+function ScheduleWeekBand({
+  band,
+  schedulesByDay,
+  weekOffset,
+  todayDayValue,
+  className,
+}: {
+  band: ScheduleBandConfig;
+  schedulesByDay: Map<string, ClassScheduleItem[]>;
+  weekOffset: number;
+  todayDayValue: string;
+  className?: string;
+}) {
+  const bandHeight = getBandHeight(band);
+  const slotCount = getBandSlotCount(band);
+  const timeLabels = getBandTimeLabels(band);
+  const midnightRowIndex = getMidnightRowIndex(band);
+  const bandHasSchedules = weekDays.some((day) =>
+    (schedulesByDay.get(day.value) ?? []).some((schedule) =>
+      isScheduleInBand(schedule, band),
+    ),
+  );
+
+  return (
+    <div className="border-b border-emerald-200/70 last:border-b-0">
+      <div className="flex items-center justify-between gap-3 border-b border-emerald-200/60 bg-emerald-100/50 px-4 py-2">
+        <div className="flex items-center gap-2">
+          <span
+            className={`inline-flex h-6 w-6 items-center justify-center rounded-md text-[10px] font-bold ${
+              band.id === "day"
+                ? "bg-amber-100 text-amber-800"
+                : "bg-indigo-100 text-indigo-800"
+            }`}
+          >
+            {band.id === "day" ? "☀" : "☾"}
+          </span>
+          <div>
+            <p className="text-xs font-semibold text-emerald-900">{band.label}</p>
+            <p className="text-[10px] text-emerald-700/70">{band.subtitle}</p>
+          </div>
+        </div>
+        {!bandHasSchedules ? (
+          <span className="text-[10px] text-emerald-700/60">Không có lịch</span>
+        ) : null}
+      </div>
+
+      <div className="grid grid-cols-[52px_repeat(7,minmax(0,1fr))]">
+        <div
+          className="relative border-r border-emerald-200/60 bg-emerald-50/80"
+          style={{ height: bandHeight }}
+        >
+          {timeLabels.map((label, index) => (
+            <div
+              key={`${band.id}-${label}`}
+              className="absolute right-1.5 -translate-y-1/2 text-[9px] font-medium text-emerald-700/60"
+              style={{
+                top: index * (60 / band.slotMinutes) * band.slotHeight,
+              }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+
+        {weekDays.map((day, dayIndex) => {
+          const daySchedules = (schedulesByDay.get(day.value) ?? []).filter(
+            (schedule) => isScheduleInBand(schedule, band),
+          );
+          const isToday = weekOffset === 0 && day.value === todayDayValue;
+
+          return (
+            <div
+              key={`${band.id}-${day.value}`}
+              className={`relative border-r border-emerald-200/60 last:border-r-0 ${
+                isToday ? "bg-emerald-100/35" : ""
+              }`}
+              style={{ height: bandHeight }}
+            >
+              {Array.from({ length: slotCount }).map((_, index) => {
+                const isCaroLight = (dayIndex + index) % 2 === 0;
+                const isMidnightRow = index === midnightRowIndex;
+
+                return (
+                  <div
+                    key={index}
+                    className={`absolute inset-x-0 border-t ${
+                      isMidnightRow
+                        ? "border-t-2 border-indigo-300/60"
+                        : "border-emerald-200/35"
+                    } ${isCaroLight ? "bg-emerald-50/90" : "bg-green-100/40"}`}
+                    style={{
+                      top: index * band.slotHeight,
+                      height: band.slotHeight,
+                    }}
+                  />
+                );
+              })}
+
+              {daySchedules.map((schedule) => (
+                <ScheduleBlock
+                  key={`${band.id}-${schedule.id}`}
+                  schedule={schedule}
+                  band={band}
+                  className={className}
+                />
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -263,6 +437,18 @@ const ScheduleStudent = () => {
     return map;
   }, [schedules]);
 
+  const activeScheduleBands = useMemo(
+    () =>
+      SCHEDULE_BANDS.filter((band) =>
+        weekDays.some((day) =>
+          (schedulesByDay.get(day.value) ?? []).some((schedule) =>
+            isScheduleInBand(schedule, band),
+          ),
+        ),
+      ),
+    [schedulesByDay],
+  );
+
   const weekRangeLabel = useMemo(() => {
     const today = new Date();
     const currentDay = today.getDay();
@@ -280,9 +466,6 @@ const ScheduleStudent = () => {
 
     return `${formatter.format(monday)} – ${formatter.format(sunday)}`;
   }, [weekOffset]);
-
-  const gridHeight = getGridSlotCount() * SLOT_HEIGHT;
-  const slotCount = getGridSlotCount();
 
   const todayDayValue = useMemo(() => {
     const map: Record<number, string> = {
@@ -322,7 +505,7 @@ const ScheduleStudent = () => {
                 Nhập mã lớp để tham gia và xem lịch học theo từng lớp.
               </p>
             </div>
-            <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-violet-300 to-transparent" />
+            <div className="mx-auto h-px w-16 bg-linear-to-r from-transparent via-violet-300 to-transparent" />
           </div>
 
           <div className="space-y-3">
@@ -356,15 +539,14 @@ const ScheduleStudent = () => {
             <Sparkles className="h-3.5 w-3.5" />
             Lịch học
           </span>
-          <div className="h-px w-full max-w-[100px] bg-gradient-to-r from-violet-400 to-transparent" />
+          <div className="h-px w-full max-w-[100px] bg-linear-to-r from-violet-400 to-transparent" />
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-1">
               <h2 className="text-2xl font-bold tracking-tight text-slate-900">
                 Lịch học theo lớp
               </h2>
               <p className="max-w-2xl text-sm text-slate-500">
-                Xem lịch buổi tối (18:00 – 03:00) theo tuần hoặc danh sách chi
-                tiết.
+                Xem lịch theo tuần với 2 khung giờ: ban ngày và ban tối.
               </p>
             </div>
             <div className="border-l border-slate-200 pl-6 text-sm">
@@ -383,7 +565,7 @@ const ScheduleStudent = () => {
                 <h3 className="text-lg font-semibold text-slate-900">
                   {viewMode === "calendar" ? "Lịch tuần" : "Danh sách lịch học"}
                 </h3>
-                <div className="mt-2 h-px w-14 bg-gradient-to-r from-slate-300 to-transparent" />
+                <div className="mt-2 h-px w-14 bg-linear-to-r from-slate-300 to-transparent" />
                 {selectedClass ? (
                   <p className="mt-2 text-sm text-slate-500">
                     {selectedClass.name} · {weekRangeLabel}
@@ -464,8 +646,8 @@ const ScheduleStudent = () => {
                 </div>
               ) : viewMode === "calendar" ? (
                 <div className="overflow-x-auto">
-                  <div className="min-w-[820px]">
-                    <div className="grid grid-cols-[64px_repeat(7,minmax(0,1fr))] border-b border-emerald-200/80 bg-gradient-to-r from-emerald-100/80 via-green-50 to-emerald-100/80">
+                  <div className="min-w-[760px]">
+                    <div className="grid grid-cols-[52px_repeat(7,minmax(0,1fr))] border-b border-emerald-200/80 bg-linear-to-r from-emerald-100/80 via-green-50 to-emerald-100/80">
                       <div className="border-r border-emerald-200/60 p-2" />
                       {weekDays.map((day) => {
                         const isToday =
@@ -498,76 +680,19 @@ const ScheduleStudent = () => {
                       })}
                     </div>
 
-                    <div className="grid grid-cols-[64px_repeat(7,minmax(0,1fr))]">
-                      <div
-                        className="relative border-r border-emerald-200/60 bg-emerald-50/80"
-                        style={{ height: gridHeight }}
-                      >
-                        {timeLabels.map((label, index) => (
-                          <div
-                            key={label}
-                            className="absolute right-2 -translate-y-1/2 text-[10px] font-medium text-emerald-700/60"
-                            style={{ top: index * 2 * SLOT_HEIGHT }}
-                          >
-                            {label}
-                          </div>
-                        ))}
-                      </div>
-
-                      {weekDays.map((day, dayIndex) => {
-                        const daySchedules =
-                          schedulesByDay.get(day.value) ?? [];
-                        const isToday =
-                          weekOffset === 0 && day.value === todayDayValue;
-
-                        return (
-                          <div
-                            key={day.value}
-                            className={`relative border-r border-emerald-200/60 last:border-r-0 ${
-                              isToday ? "ring-1 ring-inset ring-emerald-300/60" : ""
-                            }`}
-                            style={{ height: gridHeight }}
-                          >
-                            {Array.from({ length: slotCount }).map((_, index) => {
-                              const isCaroLight =
-                                (dayIndex + index) % 2 === 0;
-                              const isMidnightRow =
-                                index ===
-                                ((24 - GRID_START_HOUR) * 60) / SLOT_MINUTES;
-
-                              return (
-                                <div
-                                  key={index}
-                                  className={`absolute inset-x-0 border-t ${
-                                    isMidnightRow
-                                      ? "border-t-2 border-emerald-400/60"
-                                      : "border-emerald-200/35"
-                                  } ${
-                                    isCaroLight
-                                      ? "bg-emerald-50/90"
-                                      : "bg-green-100/45"
-                                  }`}
-                                  style={{
-                                    top: index * SLOT_HEIGHT,
-                                    height: SLOT_HEIGHT,
-                                  }}
-                                />
-                              );
-                            })}
-
-                            {daySchedules
-                              .filter(isScheduleInGridRange)
-                              .map((schedule) => (
-                                <ScheduleBlock
-                                  key={schedule.id}
-                                  schedule={schedule}
-                                  className={selectedClass?.name}
-                                />
-                              ))}
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {(activeScheduleBands.length > 0
+                      ? activeScheduleBands
+                      : SCHEDULE_BANDS
+                    ).map((band) => (
+                      <ScheduleWeekBand
+                        key={band.id}
+                        band={band}
+                        schedulesByDay={schedulesByDay}
+                        weekOffset={weekOffset}
+                        todayDayValue={todayDayValue}
+                        className={selectedClass?.name}
+                      />
+                    ))}
                   </div>
                 </div>
               ) : (
@@ -585,6 +710,18 @@ const ScheduleStudent = () => {
 
             {viewMode === "calendar" && schedules.length > 0 ? (
               <div className="flex flex-wrap items-center gap-4 rounded-xl border border-emerald-200/60 bg-emerald-50/50 px-4 py-2.5 text-xs text-emerald-800/80">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-amber-100 text-[10px]">
+                    ☀
+                  </span>
+                  Ban ngày 06:00–18:00
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-indigo-100 text-[10px]">
+                    ☾
+                  </span>
+                  Ban tối 18:00–03:00
+                </span>
                 <span className="inline-flex items-center gap-1.5">
                   <span className="h-3 w-5 rounded border border-orange-300 border-l-[3px] border-l-orange-500 bg-orange-50" />
                   Offline

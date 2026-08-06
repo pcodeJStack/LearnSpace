@@ -7,6 +7,7 @@ import {
   BookOpen,
   CalendarDays,
   GraduationCap,
+  MessageSquareHeart,
   PlayCircle,
   Sparkles,
   UserPlus,
@@ -21,6 +22,7 @@ import ClassContentManagement from "../class_content/page";
 import ScheduleStudent from "../schedule_student/page";
 import StudentProfilePage from "../profile/page";
 import StudentChangePasswordPage from "../change-password/page";
+import StudentTeacherFeedbackPage from "../teacher_feedback/page";
 import {
   studentMenuGroups,
   studentMenuLabels,
@@ -255,6 +257,14 @@ const StudentDashboardContent = () => {
                         menu: "content" as const,
                       },
                       {
+                        title: "Đánh giá giảng viên",
+                        description:
+                          "Gửi rating và feedback cho giảng viên của lớp.",
+                        icon: MessageSquareHeart,
+                        lineColor: "bg-rose-400",
+                        menu: "feedback" as const,
+                      },
+                      {
                         title: "Cập nhật hồ sơ",
                         description:
                           "Chỉnh sửa họ tên, số điện thoại và địa chỉ.",
@@ -304,6 +314,12 @@ const StudentDashboardContent = () => {
           {activeMenu === "schedule" && (
             <div className="relative h-full min-h-0">
               <ScheduleStudent />
+            </div>
+          )}
+
+          {activeMenu === "feedback" && (
+            <div className="relative h-full min-h-0">
+              <StudentTeacherFeedbackPage />
             </div>
           )}
 

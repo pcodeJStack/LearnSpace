@@ -3,6 +3,7 @@ import {
   KeyRound,
   LayoutDashboard,
   LibraryBig,
+  MessageSquareHeart,
   MonitorPlay,
   UserRound,
 } from "lucide-react";
@@ -12,6 +13,7 @@ export type TeacherMenuKey =
   | "overview"
   | "content"
   | "questionBank"
+  | "feedback"
   | "profile"
   | "password";
 
@@ -53,6 +55,15 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         accent: "from-amber-400 to-orange-500",
         activeGlow: "shadow-[0_0_20px_rgba(251,191,36,0.22)]",
       },
+      {
+        key: "feedback",
+        label: "Feedback học viên",
+        hint: "theo từng lớp",
+        index: "04",
+        icon: MessageSquareHeart,
+        accent: "from-rose-400 to-orange-400",
+        activeGlow: "shadow-[0_0_20px_rgba(251,113,133,0.22)]",
+      },
     ],
   },
   {
@@ -63,7 +74,7 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         key: "profile",
         label: "Thông tin cá nhân",
         hint: "cập nhật hồ sơ",
-        index: "04",
+        index: "05",
         icon: UserRound,
         accent: "from-fuchsia-400 to-pink-500",
         activeGlow: "shadow-[0_0_20px_rgba(232,121,249,0.22)]",
@@ -72,7 +83,7 @@ export const teacherMenuGroups: DashboardMenuGroup<TeacherMenuKey>[] = [
         key: "password",
         label: "Đổi mật khẩu",
         hint: "bảo mật tài khoản",
-        index: "05",
+        index: "06",
         icon: KeyRound,
         accent: "from-emerald-400 to-teal-500",
         activeGlow: "shadow-[0_0_20px_rgba(52,211,153,0.22)]",
@@ -85,6 +96,7 @@ export const teacherMenuLabels: Record<TeacherMenuKey, string> = {
   overview: "Tổng quan",
   content: "Video & Tài liệu",
   questionBank: "Kho đề",
+  feedback: "Feedback học viên",
   profile: "Thông tin cá nhân",
   password: "Đổi mật khẩu",
 };
