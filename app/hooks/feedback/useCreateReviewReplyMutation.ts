@@ -5,24 +5,30 @@ import type { AxiosError } from "axios";
 
 import {
   FeedbackService,
-  type CreateTeacherFeedbackPayload,
-  type CreateTeacherFeedbackResponse,
+  type CreateReviewReplyPayload,
+  type CreateReviewReplyResponse,
 } from "@/app/service/feedback.service";
 
 type ErrorResponse = {
   message?: string;
 };
 
-export const useSubmitTeacherFeedbackMutation = () => {
+type CreateReviewReplyVariables = {
+  reviewId: string;
+  payload: CreateReviewReplyPayload;
+};
+
+export const useCreateReviewReplyMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<
-    CreateTeacherFeedbackResponse,
+    CreateReviewReplyResponse,
     AxiosError<ErrorResponse>,
-    CreateTeacherFeedbackPayload
+    CreateReviewReplyVariables
   >({
-    mutationKey: ["feedback-teacher"],
-    mutationFn: (payload) => FeedbackService.createTeacherFeedback(payload),
+    mutationKey: ["review-reply"],
+    mutationFn: ({ reviewId, payload }) =>
+      FeedbackService.createReviewReply(reviewId, payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["classroom-feedback"] });
     },

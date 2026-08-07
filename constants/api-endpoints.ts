@@ -17,6 +17,7 @@ export const STUDENT_API = {
 export const FEEDBACK_API = {
   CREATE_TEACHER_FEEDBACK: "/feedback-teacher",
   GET_BY_CLASSROOM: (classroomId: string) => `/classroom/${classroomId}`,
+  CREATE_REVIEW_REPLY: (reviewId: string) => `/review-replies/${reviewId}`,
 };
 export const CLASS_API = {
   CREATE_CLASS: "/class",

@@ -13,6 +13,16 @@ export type CreateTeacherFeedbackResponse = {
   message?: string;
 };
 
+export type ClassroomFeedbackReply = {
+  id: string;
+  content: string;
+  type: "TEACHER" | "STUDENT" | string;
+  authorName: string;
+  avatar: string | null;
+  createdAt: string;
+  children?: ClassroomFeedbackReply[];
+};
+
 export type ClassroomFeedbackItem = {
   id: string;
   studentName: string;
@@ -20,6 +30,7 @@ export type ClassroomFeedbackItem = {
   feedback: string;
   avatar: string | null;
   createdAt: string;
+  replies?: ClassroomFeedbackReply[];
 };
 
 export type ClassroomFeedbackPage = {
@@ -38,6 +49,15 @@ export type GetClassroomFeedbackParams = {
   classroomId: string;
   page?: number;
   size?: number;
+};
+
+export type CreateReviewReplyPayload = {
+  content: string;
+  parentReplyId?: string | null;
+};
+
+export type CreateReviewReplyResponse = {
+  message?: string;
 };
 
 export const FeedbackService = {
@@ -60,6 +80,16 @@ export const FeedbackService = {
         params: { page, size },
       },
     );
+
+    return res.data;
+  },
+
+  createReviewReply: async (
+    reviewId: string,
+    payload: CreateReviewReplyPayload,
+  ): Promise<CreateReviewReplyResponse> => {
+    const res: AxiosResponse<CreateReviewReplyResponse> =
+      await axiosClient.post(`/review-replies/${reviewId}`, payload);
 
     return res.data;
   },
